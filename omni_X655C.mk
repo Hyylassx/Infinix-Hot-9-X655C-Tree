@@ -37,6 +37,11 @@ PRODUCT_PACKAGES += \
     teei_daemon \
     bp_kmsetkey_ca
 
+#6. Other 
+    $(DEVICE_PATH)/prebuilt/dtb.img:dtb.img \
+    $(DEVICE_PATH)/firmware/novatek_ts_fw.bin:vendor/firmware/novatek_ts_fw.bin \
+    $(DEVICE_PATH)/firmware/novatek_ts_mp.bin:vendor/firmware/novatek_ts_mp.bin 
+
 # 1. Salin Seluruh File Konfigurasi Dasar dan Script Init Ramdisk
 # 2. Copy Hardware Binaries & Daemon Services
 PRODUCT_COPY_FILES += \
@@ -73,6 +78,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/vendor/etc/vintf/manifest.xml:recovery/root/vendor/etc/vintf/manifest.xml \
     $(LOCAL_PATH)/recovery/root/vendor/etc/vintf/compatibility_matrix.xml:recovery/root/vendor/etc/vintf/compatibility_matrix.xml
+
 
 
 # Pengaturan Properti Tambahan & Penyelarasan Security Patch
