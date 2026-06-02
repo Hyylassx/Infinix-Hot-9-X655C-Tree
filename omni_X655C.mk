@@ -37,18 +37,33 @@ PRODUCT_PACKAGES += \
     teei_daemon \
     bp_kmsetkey_ca
 
-#6. Other 
-    $(DEVICE_PATH)/prebuilt/dtb.img:dtb.img \
-    $(DEVICE_PATH)/firmware/novatek_ts_fw.bin:vendor/firmware/novatek_ts_fw.bin \
-    $(DEVICE_PATH)/firmware/novatek_ts_mp.bin:vendor/firmware/novatek_ts_mp.bin 
+# 1. Salin Seluruh File Konfigurasi Dasar, Touchscreen Firmware, dan Script Init Ramdisk
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/recovery/root/init.recovery.mt6765.rc:recovery/root/init.recovery.mt6765.rc \
+    $(LOCAL_PATH)/recovery/root/init.recovery.microtrust.rc:recovery/root/init.recovery.microtrust.rc \
+    $(LOCAL_PATH)/recovery/root/init.recovery.usb.rc:recovery/root/init.recovery.usb.rc \
+    $(LOCAL_PATH)/recovery/root/ueventd.rc:recovery/root/ueventd.rc \
+    $(LOCAL_PATH)/recovery/root/ueventd.mt6765.rc:recovery/root/ueventd.mt6765.rc \
+    $(LOCAL_PATH)/recovery/root/etc/recovery.fstab:recovery/root/etc/recovery.fstab \
+    $(LOCAL_PATH)/recovery/root/etc/twrp.fstab:recovery/root/etc/twrp.fstab \
+    $(LOCAL_PATH)/recovery/root/vendor/firmware/novatek_ts_fw.bin:vendor/firmware/novatek_ts_fw.bin \
+    $(LOCAL_PATH)/recovery/root/vendor/firmware/novatek_ts_mp.bin:vendor/firmware/novatek_ts_mp.bin
 
-# 1. Salin Seluruh File Konfigurasi Dasar dan Script Init Ramdisk
 # 2. Copy Hardware Binaries & Daemon Services
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/vendor/bin/hw/android.hardware.keymaster@4.0-service.beanpod:recovery/root/vendor/bin/hw/android.hardware.keymaster@4.0-service.beanpod \
     $(LOCAL_PATH)/recovery/root/vendor/bin/hw/android.hardware.gatekeeper@1.0-service:recovery/root/vendor/bin/hw/android.hardware.gatekeeper@1.0-service \
     $(LOCAL_PATH)/recovery/root/vendor/bin/hw/vendor.microtrust.hardware.capi@2.0-service:recovery/root/vendor/bin/hw/vendor.microtrust.hardware.capi@2.0-service \
     $(LOCAL_PATH)/recovery/root/vendor/bin/hw/vendor.mediatek.hardware.keymaster_attestation@1.1-service:recovery/root/vendor/bin/hw/vendor.mediatek.hardware.keymaster_attestation@1.1-service
+
+# 3. Copy Shared Linker Security Libraries (System & VNDK-29 Namespace)
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libgatekeeper.so:recovery/root/system/lib64/libgatekeeper.so \
+    $(LOCAL_PATH)/recovery/root/system/lib/libgatekeeper.so:recovery/root/system/lib/libgatekeeper.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libteeservice_client.trustonic.so:recovery/root/system/lib64/libteeservice_client.trustonic.so \
+    $(LOCAL_PATH)/recovery/root/system/lib/libteeservice_client.trustonic.so:recovery/root/system/lib/libteeservice_client.trustonic.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/vndk-29/libsoftkeymasterdevice.so:recovery/root/system/lib64/vndk-29/libsoftkeymasterdevice.so \
+    $(LOCAL_PATH)/recovery/root/system/lib/vndk-29/libsoftkeymasterdevice.so:recovery/root/system/lib/vndk-29/libsoftkeymasterdevice.so
 
 # 4. Copy Vendor Core TEE & Attestation Framework Libraries (64-bit and 32-bit)
 PRODUCT_COPY_FILES += \
@@ -78,8 +93,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/vendor/etc/vintf/manifest.xml:recovery/root/vendor/etc/vintf/manifest.xml \
     $(LOCAL_PATH)/recovery/root/vendor/etc/vintf/compatibility_matrix.xml:recovery/root/vendor/etc/vintf/compatibility_matrix.xml
-
-
 
 # Pengaturan Properti Tambahan & Penyelarasan Security Patch
 PRODUCT_PROPERTY_OVERRIDES += \
