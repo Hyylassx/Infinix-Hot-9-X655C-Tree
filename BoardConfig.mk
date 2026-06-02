@@ -9,7 +9,6 @@ DEVICE_PATH := device/infinix/X655C
 ALLOW_MISSING_DEPENDENCIES := true
 
 # Architecture
-# Architecture
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
 TARGET_CPU_ABI := arm64-v8a
