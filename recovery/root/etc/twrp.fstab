@@ -1,0 +1,45 @@
+# Android fstab file for TWRP - Infinix X655C (Strictly Mapped)
+# <src>                                                 <mnt_point>  <type>  <mnt_flags>       <fs_mgr_flags>
+
+# Logical Dynamic Partitions (Wajib Ada untuk HP Dynamic Partition)
+system                                                  /system      ext4    ro                wait,logical,first_stage_mount
+vendor                                                  /vendor      ext4    ro                wait,logical,first_stage_mount
+product                                                 /product     ext4    ro                wait,logical,first_stage_mount
+
+# Physical Core Partitions (Jalur Singkat Hasil ls -la /dev/block/by-name/)
+/dev/block/by-name/boot                                 /boot        emmc    defaults          first_stage_mount,nofail
+/dev/block/by-name/recovery                             /recovery    emmc    defaults          first_stage_mount,nofail
+/dev/block/by-name/cache                                /cache       ext4    noatime,nosuid,nodev,noauto_da_alloc,discard    wait,check,formattable
+/dev/block/by-name/super                                /super       emmc    defaults          defaults
+
+# Metadata Fix 
+/dev/block/by-name/metadata                             /metadata    ext4    noatime,nosuid,nodev,discard         wait,formattable,first_stage_mount
+/dev/block/by-name/md_udc                               /md_udc      ext4    noatime,nosuid,nodev,discard         wait,formattable,first_stage_mount
+
+# Data Partition (Flag Enkripsi Diambil 100% dari Fstab Asli HP Kamu)
+/dev/block/by-name/userdata                             /data        f2fs    noatime,nosuid,nodev,discard,noflush_merge,reserve_root=134217,resgid=1065    wait,check,quota,reservedsize=128M,formattable,resize,checkpoint=fs,fileencryption=aes-256-xts
+
+# Security, NVRAM & Vendor Blobs
+/dev/block/by-name/tranfs                               /tranfs      ext4    noatime,nosuid,nodev,noauto_da_alloc,discard    wait,check,formattable,nofail
+/dev/block/by-name/protect1                             /mnt/vendor/protect_f    ext4    noatime,nosuid,nodev,noauto_da_alloc,commit=1,nodelalloc    wait,check,formattable
+/dev/block/by-name/protect2                             /mnt/vendor/protect_s    ext4    noatime,nosuid,nodev,noauto_da_alloc,commit=1,nodelalloc    wait,check,formattable
+/dev/block/by-name/nvdata                               /mnt/vendor/nvdata       ext4    noatime,nosuid,nodev,noauto_da_alloc,commit=1,nodelalloc    wait,check,formattable
+/dev/block/by-name/nvcfg                                /mnt/vendor/nvcfg        ext4    noatime,nosuid,nodev,noauto_da_alloc,commit=1,nodelalloc    wait,check,formattable
+/dev/block/by-name/persist                              /mnt/vendor/persist      ext4    noatime,nosuid,nodev,noauto_da_alloc,commit=1,nodelalloc    wait,check,formattable
+
+# Firmware Images
+/dev/block/by-name/frp                                  /persistent  emmc    defaults          defaults
+/dev/block/by-name/nvram                                /nvram       emmc    defaults          defaults
+/dev/block/by-name/proinfo                              /proinfo     emmc    defaults          defaults
+/dev/block/by-name/lk                                   /bootloader  emmc    defaults          defaults
+/dev/block/by-name/lk2                                  /bootloader2 emmc    defaults          defaults
+/dev/block/by-name/para                                 /misc        emmc    defaults          defaults
+/dev/block/by-name/logo                                 /logo        emmc    defaults          defaults
+/dev/block/by-name/dtbo                                 /dtbo        emmc    defaults          defaults
+/dev/block/by-name/vbmeta                               /vbmeta      emmc    defaults          defaults
+/dev/block/by-name/vbmeta_system                        /vbmeta_system emmc  defaults          first_stage_mount,nofail
+/dev/block/by-name/vbmeta_vendor                        /vbmeta_vendor emmc  defaults          first_stage_mount,nofail
+
+# Removable Storage (Bypass Enkripsi MicroSD)
+/devices/platform/externdevice*                        auto         auto    defaults          voldmanaged=sdcard1:auto
+/devices/platform/mt_usb*                               auto         auto    defaults          voldmanaged=usbotg:auto
