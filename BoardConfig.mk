@@ -34,6 +34,7 @@ BOARD_HAS_MTK_HARDWARE := true
 TARGET_USES_UEFI := true
 
 BOARD_USES_RECOVERY_AS_BOOT := false
+BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
 
 # Properties
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/etc/recovery.fstab
