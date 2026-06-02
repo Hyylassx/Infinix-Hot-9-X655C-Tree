@@ -44,10 +44,8 @@ TW_EXCLUDE_DEFAULT_USB_INIT := true
 
 # Kernel Configuration
 BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 androidboot.selinux=permissive androidboot.boot_devices=bootdevice androidboot.hardware=mt6765
-BOARD_KERNEL_IMAGE_NAME := Image.gz
 BOARD_BOOTIMG_HEADER_VERSION := 2
 
-# Kernel Configuration
 BOARD_KERNEL_IMAGE_NAME := Image.gz
 BOARD_BOOTIMG_HEADER_VERSION := 2
 
