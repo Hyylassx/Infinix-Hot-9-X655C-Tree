@@ -39,9 +39,6 @@ BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
 # Properties
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/etc/recovery.fstab
 TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
-TARGET_SCREEN_DENSITY := 480
-TARGET_OTA_ASSERT_DEVICE := X655C
-TW_EXCLUDE_DEFAULT_USB_INIT := true
 
 # Kernel Configuration
 BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 androidboot.selinux=permissive androidboot.boot_devices=bootdevice androidboot.hardware=mt6765
@@ -116,6 +113,8 @@ TW_DEFAULT_BRIGHTNESS := 0
 TW_MAX_BRIGHTNESS := 225
 TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
 TARGET_SCREEN_DENSITY := 320
+TARGET_OTA_ASSERT_DEVICE := X655C
+TW_EXCLUDE_DEFAULT_USB_INIT := true
 
 # Verified Boot (AVB) Config
 BOARD_AVB_ENABLE := false
