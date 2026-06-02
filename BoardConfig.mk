@@ -146,8 +146,14 @@ BOARD_USES_METADATA_PARTITION := true
 TW_CUSTOM_KEYMASTER_PATH := /vendor/bin/hw
 
 # Lingkungan Runtime Tambahan untuk Linker Library VNDK-29
-TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += $(TARGET_OUT_SHARED_LIBRARIES)/libsoftkeymasterdevice.so
-TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += $(TARGET_OUT_SHARED_LIBRARIES)/libgatekeeper.so
+TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libsoftkeymasterdevice.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libgatekeeper.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libteeservice_client.trustonic.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster4support.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster4.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libimsg_log.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libTEECommon.so
 
 # Security Patches & Version Override
 PLATFORM_SECURITY_PATCH := 2020-03-05
