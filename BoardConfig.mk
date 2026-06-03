@@ -138,29 +138,19 @@ TW_INCLUDE_CRYPTO_FBE := true
 TW_USE_FSCRYPT_POLICY := 1
 BOARD_USES_METADATA_PARTITION := true
 
-# Lingkungan Runtime Tambahan untuk Linker Library VNDK-29
+DEVICE_LIB_PATH := $(DEVICE_PATH)/recovery/root/vendor/lib64
 TW_CUSTOM_KEYMASTER_PATH := /vendor/bin/hw/android.hardware.keymaster@4.0-service.beanpod
-
-# Expand this list
 TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster4.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libkeymaster4support.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libimsg_log.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libTEECommon.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libmtee.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libkeystore-wifi-hidl.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libkeystore-engine-wifi-hidl.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/android.hardware.keymaster@4.0.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/android.hardware.gatekeeper@1.0.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libhidlbase.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libhidltransport.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libhwbinder.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libutils.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libcutils.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/liblog.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libcrypto.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libdl.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libm.so
+    $(DEVICE_LIB_PATH)/libmtee.so \
+    $(DEVICE_LIB_PATH)/libTEECommon.so \
+    $(DEVICE_LIB_PATH)/libion_mtk.so \
+    $(DEVICE_LIB_PATH)/libkeymaster4.so \
+    $(DEVICE_LIB_PATH)/libkeymaster4support.so \
+    $(DEVICE_LIB_PATH)/libimsg_log.so \
+    $(DEVICE_LIB_PATH)/libcrypto-mdapp.so \
+    $(DEVICE_LIB_PATH)/hw/gatekeeper.mt6765.so \
+    $(DEVICE_LIB_PATH)/hw/libSoftGatekeeper.so \
+    $(DEVICE_LIB_PATH)/vendor.mediatek.hardware.keymaster_attestation@1.1.so
 
 # Security Patches & Version Override
 PLATFORM_SECURITY_PATCH := 2020-03-05
