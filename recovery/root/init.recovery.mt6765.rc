@@ -15,6 +15,8 @@ on init
 
 on fs
     write /sys/class/udc/musb-hdrc/device/cmode 1
+    write /sys/class/udc/musb-hdrc/device/cmode 1
+    start hwservicemanager
 
 on post-fs
     symlink /dev/block/sda /dev/block/mmcblk0boot0
