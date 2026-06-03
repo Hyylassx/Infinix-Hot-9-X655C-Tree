@@ -61,8 +61,8 @@ PRODUCT_COPY_FILES += \
 
 # 4. Libraries (System & Vendor - Diseduaikan dengan Tree kamu)
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/recovery/root/system/lib/libion.so:recovery/root/system/lib/libion.so \
-    $(DEVICE_PATH)/recovery/root/system/lib64/libion.so:recovery/root/system/lib64/libion.so \
+    $(DEVICE_PATH)/recovery/root/vendor/lib/libion_mtk.so:recovery/root/vendor/lib/libion_mtk.so \
+    $(DEVICE_PATH)/recovery/root/vendor/lib64/libion_mtk.so:recovery/root/vendor/lib64/libion_mtk.so \
     $(DEVICE_PATH)/recovery/root/system/lib/libgatekeeper.so:recovery/root/system/lib/libgatekeeper.so \
     $(DEVICE_PATH)/recovery/root/system/lib64/libgatekeeper.so:recovery/root/system/lib64/libgatekeeper.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib/libcrypto-mdapp.so:recovery/root/vendor/lib/libcrypto-mdapp.so \
