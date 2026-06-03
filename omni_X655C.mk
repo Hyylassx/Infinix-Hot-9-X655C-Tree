@@ -68,7 +68,7 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/recovery/root/system/lib64/vndk-29/libsoftkeymasterdevice.so:recovery/root/system/lib64/vndk-29/libsoftkeymasterdevice.so \
     $(DEVICE_PATH)/recovery/root/system/lib/vndk-29/libsoftkeymasterdevice.so:recovery/root/system/lib/vndk-29/libsoftkeymasterdevice.so
 
-# 4. Copy Vendor Core TEE & Attestation Framework Libraries (64-bit and 32-bit)
+# 4. Copy Vendor Core TEE & Attestation Framework Libraries (KOREKSI PATH)
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/recovery/root/vendor/lib64/vendor.microtrust.hardware.capi@2.0.so:recovery/root/vendor/lib64/vendor.microtrust.hardware.capi@2.0.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib/vendor.microtrust.hardware.capi@2.0.so:recovery/root/vendor/lib/vendor.microtrust.hardware.capi@2.0.so \
@@ -89,10 +89,10 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/recovery/root/vendor/lib/hw/gatekeeper.mt6765.so:recovery/root/vendor/lib/hw/gatekeeper.mt6765.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib64/hw/libSoftGatekeeper.so:recovery/root/vendor/lib64/hw/libSoftGatekeeper.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib/hw/libSoftGatekeeper.so:recovery/root/vendor/lib/hw/libSoftGatekeeper.so \
-    $(DEVICE_PATH)/recovery/root/vendor/lib64/libcrypto-mdapp.so:vendor/lib64/libcrypto-mdapp.so \
-    $(DEVICE_PATH)/recovery/root/vendor/lib64/libmtee.so:vendor/lib64/libmtee.so \
-    $(DEVICE_PATH)/recovery/root/vendor/lib/libcrypto-mdapp.so:vendor/lib/libcrypto-mdapp.so \
-    $(DEVICE_PATH)/recovery/root/vendor/lib/libmtee.so:vendor/lib/libmtee.so \
+    $(DEVICE_PATH)/recovery/root/vendor/lib64/libcrypto-mdapp.so:recovery/root/vendor/lib64/libcrypto-mdapp.so \
+    $(DEVICE_PATH)/recovery/root/vendor/lib64/libmtee.so:recovery/root/vendor/lib64/libmtee.so \
+    $(DEVICE_PATH)/recovery/root/vendor/lib/libcrypto-mdapp.so:recovery/root/vendor/lib/libcrypto-mdapp.so \
+    $(DEVICE_PATH)/recovery/root/vendor/lib/libmtee.so:recovery/root/vendor/lib/libmtee.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib64/hw/vendor.mediatek.hardware.keymaster_attestation@1.1-impl.so:recovery/root/vendor/lib64/hw/vendor.mediatek.hardware.keymaster_attestation@1.1-impl.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib/hw/vendor.mediatek.hardware.keymaster_attestation@1.1-impl.so:recovery/root/vendor/lib/hw/vendor.mediatek.hardware.keymaster_attestation@1.1-impl.so
 
