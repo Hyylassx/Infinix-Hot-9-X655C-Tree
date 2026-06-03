@@ -1,18 +1,29 @@
-# twrp.flags - Tampilan GUI untuk Infinix Hot 9
-/boot           emmc      /dev/block/by-name/boot           flags=display="Boot";backup=1;flashimg=1
-/recovery       emmc      /dev/block/by-name/recovery       flags=display="Recovery";backup=1;flashimg=1
-/cache          ext4      /dev/block/by-name/cache          flags=display="Cache"
-/metadata       ext4      /dev/block/by-name/metadata       flags=display="Metadata"
-/voldmanaged    auto      /devices/platform/externdevice* flags=display="MicroSD";storage;wipeui;removable
-/usbotg         auto      /devices/platform/mt_usb* flags=display="USB OTG";storage;wipeui;removable
+# Boot & Recovery
+/boot           emmc    /dev/block/by-name/boot            flags=display="Boot";backup=1;flashimg=1
+/recovery       emmc    /dev/block/by-name/recovery        flags=display="Recovery";backup=1;flashimg=1
 
-# Backup kritis NVRAM/IMEI
-/nvram          emmc      /dev/block/by-name/nvram          flags=display="NVRAM";backup=1;subpartitionof=/nvdata
-/nvdata         ext4      /dev/block/by-name/nvdata         flags=display="NVData";backup=1
-/nvcfg          ext4      /dev/block/by-name/nvcfg          flags=display="NVCfg";backup=1
-/persistent     emmc      /dev/block/by-name/frp            flags=display="FRP";backup=1
+# Main Partitions
+/system         ext4    /dev/block/mapper/system          flags=display="System";backup=1
+/vendor         ext4    /dev/block/mapper/vendor          flags=display="Vendor";backup=1
+/product        ext4    /dev/block/mapper/product         flags=display="Product";backup=1
+/data           f2fs    /dev/block/by-name/userdata       flags=display="Data";backup=1;wipeingui
+/cache          ext4    /dev/block/by-name/cache          flags=display="Cache";wipeingui
+/metadata       ext4    /dev/block/by-name/metadata       flags=display="Metadata"
 
-# Firmware images backup
-/logo           emmc      /dev/block/by-name/logo           flags=display="Logo";backup=1;flashimg=1
-/dtbo           emmc      /dev/block/by-name/dtbo           flags=display="DTBO";backup=1;flashimg=1
-/vbmeta         emmc      /dev/block/by-name/vbmeta         flags=display="VBMeta";backup=1;flashimg=1
+# NVRAM / IMEI Related
+/nvram          emmc    /dev/block/by-name/nvram          flags=display="NVRAM";backup=1
+/nvdata         ext4    /dev/block/by-name/nvdata         flags=display="NVData";backup=1
+/nvcfg          ext4    /dev/block/by-name/nvcfg          flags=display="NVCfg";backup=1
+
+# Persist & Security
+/persist        ext4    /dev/block/by-name/persist        flags=display="Persist";backup=1
+/frp            emmc    /dev/block/by-name/frp            flags=display="FRP";backup=1
+
+# Firmware Images
+/logo           emmc    /dev/block/by-name/logo           flags=display="Logo";backup=1;flashimg=1
+/dtbo           emmc    /dev/block/by-name/dtbo           flags=display="DTBO";backup=1;flashimg=1
+/vbmeta         emmc    /dev/block/by-name/vbmeta         flags=display="VBMeta";backup=1;flashimg=1
+
+# External Storage
+/voldmanaged    auto    /devices/platform/externdevice*   flags=display="MicroSD";storage;wipeui;removable
+/usbotg         auto    /devices/platform/mt_usb*         flags=display="USB OTG";storage;wipeui;removable
