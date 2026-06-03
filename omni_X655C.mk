@@ -89,6 +89,10 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/recovery/root/vendor/lib/hw/gatekeeper.mt6765.so:recovery/root/vendor/lib/hw/gatekeeper.mt6765.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib64/hw/libSoftGatekeeper.so:recovery/root/vendor/lib64/hw/libSoftGatekeeper.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib/hw/libSoftGatekeeper.so:recovery/root/vendor/lib/hw/libSoftGatekeeper.so \
+    $(DEVICE_PATH)/recovery/root/vendor/lib64/libcrypto-mdapp.so:vendor/lib64/libcrypto-mdapp.so \
+    $(DEVICE_PATH)/recovery/root/vendor/lib64/libmtee.so:vendor/lib64/libmtee.so \
+    $(DEVICE_PATH)/recovery/root/vendor/lib/libcrypto-mdapp.so:vendor/lib/libcrypto-mdapp.so \
+    $(DEVICE_PATH)/recovery/root/vendor/lib/libmtee.so:vendor/lib/libmtee.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib64/hw/vendor.mediatek.hardware.keymaster_attestation@1.1-impl.so:recovery/root/vendor/lib64/hw/vendor.mediatek.hardware.keymaster_attestation@1.1-impl.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib/hw/vendor.mediatek.hardware.keymaster_attestation@1.1-impl.so:recovery/root/vendor/lib/hw/vendor.mediatek.hardware.keymaster_attestation@1.1-impl.so
 
