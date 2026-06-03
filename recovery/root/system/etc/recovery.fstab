@@ -1,45 +1,42 @@
-# Android fstab file for TWRP - Infinix X655C (Clean Optimized)
-# <src>                                                 <mnt_point>  <type>  <mnt_flags>       <fs_mgr_flags>
+# Android fstab file for TWRP - Infinix X655C
 
-# Logical Dynamic Partitions
-system                                                  /system      ext4    ro                wait,logical
-vendor                                                  /vendor      ext4    ro                wait,logical
-product                                                 /product     ext4    ro                wait,logical
+# Dynamic Partitions
+system      /system      ext4    ro      wait,logical,first_stage_mount
+vendor      /vendor      ext4    ro      wait,logical,first_stage_mount
+product     /product     ext4    ro      wait,logical,first_stage_mount
 
-# Physical Core Partitions
-/dev/block/by-name/boot                                 /boot        emmc    defaults          defaults
-/dev/block/by-name/recovery                             /recovery    emmc    defaults          defaults
-/dev/block/by-name/cache                                /cache       ext4    noatime,nosuid,nodev,discard    wait,check,formattable
-/dev/block/by-name/super                                /super       emmc    defaults          defaults
+# Core Partitions
+/dev/block/by-name/boot         /boot         emmc    defaults    defaults
+/dev/block/by-name/recovery     /recovery     emmc    defaults    defaults
+/dev/block/by-name/cache        /cache        ext4    noatime,nosuid,nodev,discard    wait,check,formattable
+/dev/block/by-name/metadata     /metadata     ext4    noatime,nosuid,nodev,discard    wait,formattable
+/dev/block/by-name/super        /super        emmc    defaults    defaults
 
-# Metadata Fix (Tanpa first_stage_mount)
-/dev/block/by-name/metadata                             /metadata    ext4    noatime,nosuid,nodev,discard    wait,formattable
-/dev/block/by-name/md_udc                               /md_udc      ext4    noatime,nosuid,nodev,discard    wait,formattable
+# Data
+/dev/block/by-name/userdata     /data         f2fs    noatime,nosuid,nodev,discard    wait,check,formattable
 
-# Data Partition (Hanya menyisakan flag enkripsi esensial)
-/dev/block/by-name/userdata                             /data        f2fs    noatime,nosuid,nodev,discard    wait,check,formattable,fileencryption=aes-256-xts
+# Vendor / NVRAM
+/dev/block/by-name/md_udc       /md_udc                     ext4    noatime,nosuid,nodev,discard    wait,formattable
+/dev/block/by-name/tranfs       /tranfs                     ext4    noatime,nosuid,nodev,discard    wait,check,formattable,nofail
+/dev/block/by-name/protect1     /mnt/vendor/protect_f       ext4    noatime,nosuid,nodev            wait,check,formattable
+/dev/block/by-name/protect2     /mnt/vendor/protect_s       ext4    noatime,nosuid,nodev            wait,check,formattable
+/dev/block/by-name/nvdata       /mnt/vendor/nvdata          ext4    noatime,nosuid,nodev            wait,check,formattable
+/dev/block/by-name/nvcfg        /mnt/vendor/nvcfg           ext4    noatime,nosuid,nodev            wait,check,formattable
+/dev/block/by-name/persist      /mnt/vendor/persist         ext4    noatime,nosuid,nodev            wait,check,formattable
 
-# Security, NVRAM & Vendor Blobs
-/dev/block/by-name/tranfs                               /tranfs      ext4    noatime,nosuid,nodev,discard    wait,check,formattable,nofail
-/dev/block/by-name/protect1                             /mnt/vendor/protect_f    ext4    noatime,nosuid,nodev    wait,check,formattable
-/dev/block/by-name/protect2                             /mnt/vendor/protect_s    ext4    noatime,nosuid,nodev    wait,check,formattable
-/dev/block/by-name/nvdata                               /mnt/vendor/nvdata       ext4    noatime,nosuid,nodev    wait,check,formattable
-/dev/block/by-name/nvcfg                                /mnt/vendor/nvcfg        ext4    noatime,nosuid,nodev    wait,check,formattable
-/dev/block/by-name/persist                              /mnt/vendor/persist      ext4    noatime,nosuid,nodev    wait,check,formattable
+# Firmware / Security
+/dev/block/by-name/frp            /frp             emmc    defaults    defaults
+/dev/block/by-name/nvram          /nvram           emmc    defaults    defaults
+/dev/block/by-name/proinfo        /proinfo         emmc    defaults    defaults
+/dev/block/by-name/lk             /bootloader      emmc    defaults    defaults
+/dev/block/by-name/lk2            /bootloader2     emmc    defaults    defaults
+/dev/block/by-name/para           /misc            emmc    defaults    defaults
+/dev/block/by-name/logo           /logo            emmc    defaults    defaults
+/dev/block/by-name/dtbo           /dtbo            emmc    defaults    defaults
+/dev/block/by-name/vbmeta         /vbmeta          emmc    defaults    defaults
+/dev/block/by-name/vbmeta_system  /vbmeta_system   emmc    defaults    nofail
+/dev/block/by-name/vbmeta_vendor  /vbmeta_vendor   emmc    defaults    nofail
 
-# Firmware Images
-/dev/block/by-name/frp                                  /persistent  emmc    defaults          defaults
-/dev/block/by-name/nvram                                /nvram       emmc    defaults          defaults
-/dev/block/by-name/proinfo                              /proinfo     emmc    defaults          defaults
-/dev/block/by-name/lk                                   /bootloader  emmc    defaults          defaults
-/dev/block/by-name/lk2                                  /bootloader2 emmc    defaults          defaults
-/dev/block/by-name/para                                 /misc        emmc    defaults          defaults
-/dev/block/by-name/logo                                 /logo        emmc    defaults          defaults
-/dev/block/by-name/dtbo                                 /dtbo        emmc    defaults          defaults
-/dev/block/by-name/vbmeta                               /vbmeta      emmc    defaults          defaults
-/dev/block/by-name/vbmeta_system                        /vbmeta_system emmc  defaults          nofail
-/dev/block/by-name/vbmeta_vendor                        /vbmeta_vendor emmc  defaults          nofail
-
-# Removable Storage
-/devices/platform/externdevice* auto         auto    defaults          voldmanaged=sdcard1:auto
-/devices/platform/mt_usb* auto         auto    defaults          voldmanaged=usbotg:auto
+# External Storage
+/devices/platform/externdevice*   auto    auto    defaults    voldmanaged=sdcard1:auto
+/devices/platform/mt_usb*         auto    auto    defaults    voldmanaged=usbotg:auto
