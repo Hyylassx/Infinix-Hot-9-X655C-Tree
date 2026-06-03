@@ -132,7 +132,6 @@ RECOVERY_SDCARD_ON_DATA := true
 # Touch / Input Tweaks
 TW_INPUT_BLACKLIST := "hct_battery"
 
-# Encryption / Crypto (Android 10 File-Based Encryption Handling)
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
 TW_USE_FSCRYPT_POLICY := 1
@@ -148,10 +147,13 @@ TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
     $(DEVICE_LIB_PATH)/libkeymaster4support.so \
     $(DEVICE_LIB_PATH)/libimsg_log.so \
     $(DEVICE_LIB_PATH)/libcrypto-mdapp.so \
+    $(DEVICE_LIB_PATH)/libpuresoftkeymasterdevice.so \
+    $(DEVICE_LIB_PATH)/vendor.microtrust.hardware.capi@2.0.so \
+    $(DEVICE_LIB_PATH)/vendor.mediatek.hardware.keymaster_attestation@1.0.so \
+    $(DEVICE_LIB_PATH)/vendor.mediatek.hardware.keymaster_attestation@1.1.so \
     $(DEVICE_LIB_PATH)/hw/gatekeeper.mt6765.so \
     $(DEVICE_LIB_PATH)/hw/libSoftGatekeeper.so \
-    $(DEVICE_LIB_PATH)/vendor.mediatek.hardware.keymaster_attestation@1.1.so \
-    $(DEVICE_PATH)/recovery/root/vendor/lib64/libpuresoftkeymasterdevice.so
+    $(DEVICE_LIB_PATH)/hw/android.hardware.gatekeeper@1.0-impl.so
 # Pastikan jalur ini mengarah tepat ke lokasi file di device tree kamu
 
 
