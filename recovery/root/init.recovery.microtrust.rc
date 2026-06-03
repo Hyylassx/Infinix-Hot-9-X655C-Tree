@@ -30,7 +30,7 @@ service teei_daemon /vendor/bin/teei_daemon \
     seclabel u:r:teei_daemon:s0
 
 # ============================================
-# Microtrust CAPI 2.0 (Required for Beanpod keymaster)
+# Microtrust CAPI 2.0
 # ============================================
 service teei_capi_2_0 /vendor/bin/hw/vendor.microtrust.hardware.capi@2.0-service
     class core
@@ -50,7 +50,7 @@ service bp_kmsetkey_ca /vendor/bin/bp_kmsetkey_ca
     seclabel u:r:teei_daemon:s0
 
 # ============================================
-# Keymaster 4.0 (Beanpod) - HIDL service
+# Keymaster 4.0 (Beanpod)
 # ============================================
 service keymaster-4-0-beanpod /vendor/bin/hw/android.hardware.keymaster@4.0-service.beanpod
     interface android.hardware.keymaster@4.0::IKeymasterDevice default
@@ -60,7 +60,7 @@ service keymaster-4-0-beanpod /vendor/bin/hw/android.hardware.keymaster@4.0-serv
     seclabel u:r:hal_keymaster_default:s0
 
 # ============================================
-# Gatekeeper 1.0 - HIDL service
+# Gatekeeper 1.0
 # ============================================
 service gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
     interface android.hardware.gatekeeper@1.0::IGatekeeper default
@@ -70,7 +70,7 @@ service gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
     seclabel u:r:hal_gatekeeper_default:s0
 
 # ============================================
-# Startup Sequence (GUARANTEED TRIGGERS)
+# Startup Sequence (REAL TRIGGERS)
 # ============================================
 on fs
     start hwservicemanager
@@ -85,7 +85,7 @@ on boot
     start gatekeeper-1-0
 
 # ============================================
-# Shutdown after TWRP decrypts
+# Shutdown
 # ============================================
 on property:twrp.decrypt.done=true
     stop gatekeeper-1-0
