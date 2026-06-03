@@ -24,35 +24,35 @@ service teei_daemon /vendor/bin/teei_daemon \
     user system
     group system
     disabled
-    seclabel u:r:teei_daemon:s0
+    seclabel u:r:recovery:s0
 
 service teei_capi_2_0 /vendor/bin/hw/vendor.microtrust.hardware.capi@2.0-service
     class core
     user system
     group system
     disabled
-    seclabel u:r:teei_daemon:s0
+    seclabel u:r:recovery:s0
 
 service bp_kmsetkey_ca /vendor/bin/bp_kmsetkey_ca
     class core
     user system
     group system
     disabled
-    seclabel u:r:teei_daemon:s0
+    seclabel u:r:recovery:s0
 
 service keymaster-4-0-beanpod /vendor/bin/hw/android.hardware.keymaster@4.0-service.beanpod
     interface android.hardware.keymaster@4.0::IKeymasterDevice default
     user system
     group system drmrpc
     disabled
-    seclabel u:r:hal_keymaster_default:s0
+    seclabel u:r:recovery:s0
 
 service gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
     interface android.hardware.gatekeeper@1.0::IGatekeeper default
     user system
     group system
     disabled
-    seclabel u:r:hal_gatekeeper_default:s0
+    seclabel u:r:recovery:s0
 
 # ============================================
 # ALL services start on boot (recovery-safe trigger)
@@ -60,13 +60,12 @@ service gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
 on fs
     start hwservicemanager
 
-# KITA MATIKAN DULU SEMENTARA BIAR TIDAK CRASH/LOOPING
-# on boot
-#     start teei_daemon
-#     start teei_capi_2_0
-#     start bp_kmsetkey_ca
-#     start keymaster-4-0-beanpod
-#     start gatekeeper-1-0
+on boot
+    start teei_daemon
+    start teei_capi_2_0
+    start bp_kmsetkey_ca
+    start keymaster-4-0-beanpod
+    start gatekeeper-1-0
 
 # ============================================
 # Shutdown
