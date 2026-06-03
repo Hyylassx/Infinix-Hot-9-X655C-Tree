@@ -150,7 +150,10 @@ TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
     $(DEVICE_LIB_PATH)/libcrypto-mdapp.so \
     $(DEVICE_LIB_PATH)/hw/gatekeeper.mt6765.so \
     $(DEVICE_LIB_PATH)/hw/libSoftGatekeeper.so \
-    $(DEVICE_LIB_PATH)/vendor.mediatek.hardware.keymaster_attestation@1.1.so
+    $(DEVICE_LIB_PATH)/vendor.mediatek.hardware.keymaster_attestation@1.1.so \
+    $(DEVICE_PATH)/recovery/root/vendor/lib64/libpuresoftkeymasterdevice.so
+# Pastikan jalur ini mengarah tepat ke lokasi file di device tree kamu
+
 
 # Security Patches & Version Override
 PLATFORM_SECURITY_PATCH := 2020-03-05
