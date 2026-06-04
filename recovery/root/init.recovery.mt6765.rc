@@ -8,7 +8,7 @@ on init
     mkdir /tmp 0777 root root
     mkdir /data 0771 system system
     restorecon /tmp
-    export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/system/lib64/vndk-29:/system/lib:/vendor/lib:/system/lib/vndk-29
+    export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/system/lib:/vendor/lib
 
 on fs
     write /sys/class/udc/musb-hdrc/device/cmode 1
