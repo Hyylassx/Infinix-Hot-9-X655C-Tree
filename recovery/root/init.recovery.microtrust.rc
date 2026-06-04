@@ -69,6 +69,9 @@ service gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
 # ============================================
 # TEE Device Nodes
 # ============================================
+# ============================================
+# TEE Device Nodes (Safe Node Assignment)
+# ============================================
 on fs
     chmod 0660 /dev/teei_client
     chown system system /dev/teei_client
@@ -88,7 +91,7 @@ on fs
     chown system system /dev/emmcrpmb0
     chown system system /dev/utr_tui
     chmod 0660 /dev/utr_tui
-    start teei_daemon
+    # DO NOT start teei_daemon here anymore
 
 # ============================================
 # TEE Directory Tree Layout
