@@ -127,18 +127,28 @@ TWRP_EVENT_LOGGING := true
 RECOVERY_SDCARD_ON_DATA := true
 
 # ============================================================
-# HARD OVERRIDE: DISABLE CRYPTO SUBROUTINES TO STOP SIGABRT
+# FINAL VERIFIED TWRP DECRYPTION & ENVIRONMENT OVERRIDES
 # ============================================================
-TW_INCLUDE_CRYPTO := false
-TW_INCLUDE_CRYPTO_FBE := false
-TW_INCLUDE_FBE_METADATA_DECRYPT := false
-BOARD_USES_METADATA_PARTITION := false
+# Enable Decryption using MediaTek Vendor Blobs
+TW_INCLUDE_CRYPTO := true
+TW_INCLUDE_CRYPTO_FBE := true
+TW_INCLUDE_FBE_METADATA_DECRYPT := true
+BOARD_USES_METADATA_PARTITION := true
+TW_USE_FSCRYPT_POLICY := 1
 
-TW_RECOVERY_ADDITIONAL_RELINK_FILES += \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libhwbinder.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libhidlbase.so
+# Delay property writes to prevent early property service lockout (Error 0xb)
+TW_NEEDS_HW_PROPERTY_FIX := true
+
+# Specify the exact path to your hardware keymaster service binary
+TW_CUSTOM_KEYMASTER_PATH := /vendor/bin/hw/android.hardware.keymaster@4.0-service.beanpod
+
+# Force compiler to link your device's physical libraries
+TARGET_RECOVERY_DEVICE_MODULES += \
+    libhwbinder \
+    android.hardware.boot@1.0
 
 # Security Patches & Version Override
 PLATFORM_SECURITY_PATCH := 2020-03-05
 VENDOR_SECURITY_PATCH := 2020-03-05
 PLATFORM_VERSION := 10
+PLATFORM_VERSION_LAST_STABLE := 10
