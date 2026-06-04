@@ -55,14 +55,53 @@ service gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
     seclabel u:r:recovery:s0
 
 # ============================================
-# Safe Boot Triggers (Only launch baseline hal)
+# Dynamic Device Mounts & Node Permissions
 # ============================================
 on fs
+    chmod 0660 /dev/teei_client
+    chown system system /dev/teei_client
+    chmod 0660 /dev/teei_config
+    chown system system /dev/teei_config
+    chmod 0666 /dev/tee0
+    chown system drmrpc /dev/tee0
+    chmod 0660 /dev/tz_vfs
+    chown system system /dev/tz_vfs
+    chmod 0660 /dev/teei_fp
+    chown system /dev/teei_fp
+    chown system drmrpc /dev/ut_keymaster
+    chmod 0660 /dev/ut_keymaster
+    chmod 0660 /dev/rpmb0
+    chown system system /dev/rpmb0
+    chmod 0660 /dev/emmcrpmb0
+    chown system system /dev/emmcrpmb0
+    chown system system /dev/utr_tui
+    chmod 0660 /dev/utr_tui
     start hwservicemanager
 
 on boot
-    # Disabled crashing crypto engines on raw boot to let graphics load
-    # we can start these later via TWRP shell scripts or decryption triggers
+    chown system system /sys/bus/platform/devices/utos/dcih_notify_test
+    chown system system /sys/bus/platform/devices/utos/dcih_wait_notify_test
+    chown system system /sys/bus/platform/devices/utos/load_ut_drv
+    chown system system /sys/bus/platform/devices/utos/unload_ut_drv
+    chown system system /sys/bus/platform/devices/utos/notify_ree_dci_handler
+
+# ============================================================
+# INTERLOCKED TWRP DECRYPTION TRIGGER
+# ============================================================
+on property:crypto.ready=1
+    # Create directory array structures inside decrypted data boundaries
+    mkdir /data/vendor/thh 0755 system system
+    mkdir /data/vendor/thh/system 0755 system system
+    mkdir /data/vendor/thh/ta 0755 system system
+    mkdir /data/vendor/key_provisioning 0771 system system
+    restorecon_recursive /data/vendor/thh
+    
+    # Fire up the engine stack sequentially once the UI layout is safe
+    start teei_daemon
+    start teei_capi_2_0
+    start bp_kmsetkey_ca
+    start keymaster-4-0-beanpod
+    start gatekeeper-1-0
 
 # ============================================
 # Shutdown
