@@ -31,9 +31,18 @@ service teei_capi_2_0 /vendor/bin/hw/vendor.microtrust.hardware.capi@2.0-service
     user system
     group system
     disabled
+    oneshot
     seclabel u:r:recovery:s0
 
 service bp_kmsetkey_ca /vendor/bin/bp_kmsetkey_ca
+    class core
+    user system
+    group system
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
+
+service keymaster-attestation /vendor/bin/hw/vendor.mediatek.hardware.keymaster_attestation@1.1-service
     class core
     user system
     group system
@@ -55,7 +64,7 @@ service gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
     seclabel u:r:recovery:s0
 
 # ============================================
-# Dynamic Device Mounts & Node Permissions
+# TEE Device Nodes (Original MTK)
 # ============================================
 on fs
     chmod 0660 /dev/teei_client
@@ -76,24 +85,27 @@ on fs
     chown system system /dev/emmcrpmb0
     chown system system /dev/utr_tui
     chmod 0660 /dev/utr_tui
-    start hwservicemanager
-
-on boot
-    chown system system /sys/bus/platform/devices/utos/dcih_notify_test
-    chown system system /sys/bus/platform/devices/utos/dcih_wait_notify_test
-    chown system system /sys/bus/platform/devices/utos/load_ut_drv
-    chown system system /sys/bus/platform/devices/utos/unload_ut_drv
-    chown system system /sys/bus/platform/devices/utos/notify_ree_dci_handler
-
-    # Start TEE stack EARLY before TWRP FBE detection
     start teei_daemon
+
+# ============================================
+# Sequential TEE Stack Startup
+# ============================================
+# Start helpers as soon as hwservicemanager is alive
+on property:init.svc.hwservicemanager=running
     start teei_capi_2_0
     start bp_kmsetkey_ca
+
+# Start keymaster stack after TEE helpers finish
+on property:init.svc.bp_kmsetkey_ca=stopped
+    start keymaster-attestation
     start keymaster-4-0-beanpod
     start gatekeeper-1-0
 
-# Keep data directory setup for when TWRP decrypts
-on property:crypto.ready=1
+# ============================================
+# Data Directories (Must exist before decrypt)
+# ============================================
+on boot
+    mkdir /data/vendor 0755 system system
     mkdir /data/vendor/thh 0755 system system
     mkdir /data/vendor/thh/system 0755 system system
     mkdir /data/vendor/thh/ta 0755 system system
@@ -101,11 +113,16 @@ on property:crypto.ready=1
     restorecon_recursive /data/vendor/thh
 
 # ============================================
-# Shutdown
+# TWRP Interlock (Keep for compatibility)
 # ============================================
+on property:crypto.ready=1
+    # TWRP sets this when it begins decrypt; services are already running
+    # No action needed here anymore
+
 on property:twrp.decrypt.done=true
     stop gatekeeper-1-0
     stop keymaster-4-0-beanpod
+    stop keymaster-attestation
     stop teei_capi_2_0
     stop bp_kmsetkey_ca
     stop teei_daemon
