@@ -99,7 +99,7 @@ BOARD_SUPER_PARTITION_SIZE := 4479516672
 BOARD_SUPER_PARTITION_GROUPS := infinix_dynamic_partitions
 BOARD_INFINIX_DYNAMIC_PARTITIONS_SIZE := 4475322368
 BOARD_INFINIX_DYNAMIC_PARTITIONS_PARTITION_LIST := system vendor product
-BOARD_BOOT_DYNAMIC_PARTITIONS := true
+BOARD_USES_DYNAMIC_PARTITIONS := true
 
 # Verified Boot (AVB) Config
 BOARD_AVB_ENABLE := false
@@ -135,12 +135,6 @@ TW_INCLUDE_CRYPTO_FBE := true
 TW_INCLUDE_FBE_METADATA_DECRYPT := true
 BOARD_USES_METADATA_PARTITION := true
 TW_USE_FSCRYPT_POLICY := 1
-
-# Delay property writes to prevent early property service lockout (Error 0xb)
-TW_NEEDS_HW_PROPERTY_FIX := true
-
-# Specify the exact path to your hardware keymaster service binary
-TW_CUSTOM_KEYMASTER_PATH := /vendor/bin/hw/android.hardware.keymaster@4.0-service.beanpod
 
 # Force compiler to link your device's physical libraries
 TARGET_RECOVERY_DEVICE_MODULES += \
