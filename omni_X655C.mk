@@ -38,7 +38,7 @@ PRODUCT_GMS_CLIENTID_BASE := android-infinix
 PRODUCT_PACKAGES += \
     logd \
     liblog \
-    logcat 
+    logcat
 
 # 2. Config
 PRODUCT_COPY_FILES += \
@@ -76,7 +76,7 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/recovery/root/system/lib/libsoftkeymasterdevice.so:recovery/root/system/lib/libsoftkeymasterdevice.so \
     $(DEVICE_PATH)/recovery/root/system/lib64/libsoftkeymasterdevice.so:recovery/root/system/lib64/libsoftkeymasterdevice.so \
     $(DEVICE_PATH)/recovery/root/system/lib/libhidlmemory.so:recovery/root/system/lib/libhidlmemory.so \
-    $(DEVICE_PATH)/recovery/root/system/lib64/libhidlmemory.so:recovery/root/system/lib64/libhidlmemory.so 
+    $(DEVICE_PATH)/recovery/root/system/lib64/libhidlmemory.so:recovery/root/system/lib64/libhidlmemory.so
 
 # ============================================================
 # VENDOR LIBRARIES (32 BIT)
