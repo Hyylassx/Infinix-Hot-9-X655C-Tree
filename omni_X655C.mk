@@ -40,9 +40,7 @@ PRODUCT_PACKAGES += \
     bp_kmsetkey_ca \
     logd \
     liblog \
-    logcat \
-    android.hardware.boot@1.0-impl \
-    android.hardware.boot@1.0-service
+    logcat 
 
 # 2. Config
 PRODUCT_COPY_FILES += \
@@ -79,8 +77,6 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/recovery/root/system/lib64/libkeymaster_portable.so:recovery/root/system/lib64/libkeymaster_portable.so \
     $(DEVICE_PATH)/recovery/root/system/lib/libsoftkeymasterdevice.so:recovery/root/system/lib/libsoftkeymasterdevice.so \
     $(DEVICE_PATH)/recovery/root/system/lib64/libsoftkeymasterdevice.so:recovery/root/system/lib64/libsoftkeymasterdevice.so \
-    $(DEVICE_PATH)/recovery/root/system/lib/android.hardware.boot@1.0.so:recovery/root/system/lib/android.hardware.boot@1.0.so \
-    $(DEVICE_PATH)/recovery/root/system/lib64/android.hardware.boot@1.0.so:recovery/root/system/lib64/android.hardware.boot@1.0.so \
     $(DEVICE_PATH)/recovery/root/system/lib/android.hidl.allocator@1.0.so:recovery/root/system/lib/android.hidl.allocator@1.0.so \
     $(DEVICE_PATH)/recovery/root/system/lib64/android.hidl.allocator@1.0.so:recovery/root/system/lib64/android.hidl.allocator@1.0.so \
     $(DEVICE_PATH)/recovery/root/system/lib/libhidlmemory.so:recovery/root/system/lib/libhidlmemory.so \
