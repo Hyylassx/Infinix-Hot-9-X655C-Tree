@@ -34,6 +34,7 @@ service teei_capi_2_0 /vendor/bin/hw/vendor.microtrust.hardware.capi@2.0-service
     oneshot
     seclabel u:r:recovery:s0
 
+# bp_kmsetkey_ca is bypassed; kept here but disabled
 service bp_kmsetkey_ca /vendor/bin/bp_kmsetkey_ca
     class core
     user system
@@ -53,6 +54,7 @@ service keymaster-4-0-beanpod /vendor/bin/hw/android.hardware.keymaster@4.0-serv
     interface android.hardware.keymaster@4.0::IKeymasterDevice default
     user system
     group system drmrpc
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib
     disabled
     seclabel u:r:recovery:s0
 
@@ -60,6 +62,7 @@ service gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
     interface android.hardware.gatekeeper@1.0::IGatekeeper default
     user system
     group system
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib
     disabled
     seclabel u:r:recovery:s0
 
@@ -88,7 +91,7 @@ on fs
     start teei_daemon
 
 # ============================================
-# FULL TEE Directory Tree (from original stock)
+# TEE Directory Tree Layout
 # ============================================
 on boot
     chown system system /sys/bus/platform/devices/utos/dcih_notify_test
@@ -97,7 +100,6 @@ on boot
     chown system system /sys/bus/platform/devices/utos/unload_ut_drv
     chown system system /sys/bus/platform/devices/utos/notify_ree_dci_handler
 
-    # Create ALL directories that bp_kmsetkey_ca expects
     mkdir /data/vendor 0755 system system
     mkdir /data/vendor/thh 0755 system system
     mkdir /data/vendor/thh/system 0755 system system
@@ -124,16 +126,13 @@ on boot
     restorecon_recursive /data/vendor/thh
 
 # ============================================
-# Sequential TEE Stack Startup
+# Direct Crypto Stack Startup (Bypassing bp_kmsetkey)
 # ============================================
 on property:init.svc.hwservicemanager=running
     start teei_capi_2_0
-    start bp_kmsetkey_ca
-
-on property:init.svc.bp_kmsetkey_ca=stopped
-    start keymaster-attestation
     start keymaster-4-0-beanpod
     start gatekeeper-1-0
+    start keymaster-attestation
 
 # ============================================
 # Shutdown
@@ -143,5 +142,4 @@ on property:twrp.decrypt.done=true
     stop keymaster-4-0-beanpod
     stop keymaster-attestation
     stop teei_capi_2_0
-    stop bp_kmsetkey_ca
     stop teei_daemon
