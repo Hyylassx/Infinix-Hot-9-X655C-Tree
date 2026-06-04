@@ -64,7 +64,7 @@ service gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
     seclabel u:r:recovery:s0
 
 # ============================================
-# TEE Device Nodes (Original MTK)
+# TEE Device Nodes
 # ============================================
 on fs
     chmod 0660 /dev/teei_client
@@ -88,37 +88,56 @@ on fs
     start teei_daemon
 
 # ============================================
+# FULL TEE Directory Tree (from original stock)
+# ============================================
+on boot
+    chown system system /sys/bus/platform/devices/utos/dcih_notify_test
+    chown system system /sys/bus/platform/devices/utos/dcih_wait_notify_test
+    chown system system /sys/bus/platform/devices/utos/load_ut_drv
+    chown system system /sys/bus/platform/devices/utos/unload_ut_drv
+    chown system system /sys/bus/platform/devices/utos/notify_ree_dci_handler
+
+    # Create ALL directories that bp_kmsetkey_ca expects
+    mkdir /data/vendor 0755 system system
+    mkdir /data/vendor/thh 0755 system system
+    mkdir /data/vendor/thh/system 0755 system system
+    mkdir /data/vendor/thh/tee_00 0755 system system
+    mkdir /data/vendor/thh/tee_01 0755 system system
+    mkdir /data/vendor/thh/tee_02 0755 system system
+    mkdir /data/vendor/thh/tee_03 0755 system system
+    mkdir /data/vendor/thh/tee_04 0755 system system
+    mkdir /data/vendor/thh/tee_05 0755 system system
+    mkdir /data/vendor/thh/tee_06 0755 system system
+    mkdir /data/vendor/thh/tee_07 0755 system system
+    mkdir /data/vendor/thh/tee 0755 system system
+    mkdir /data/vendor/thh/tee/tas 0755 system system
+    mkdir /data/vendor/thh/tee_08 0755 system system
+    mkdir /data/vendor/thh/tee_09 0755 system system
+    mkdir /data/vendor/thh/tee_0A 0755 system system
+    mkdir /data/vendor/thh/tee_0B 0755 system system
+    mkdir /data/vendor/thh/tee_0C 0755 system system
+    mkdir /data/vendor/thh/tee_0D 0755 system system
+    mkdir /data/vendor/thh/tee_0E 0755 system system
+    mkdir /data/vendor/thh/tee_0F 0755 system system
+    mkdir /data/vendor/thh/ta 0755 system system
+    mkdir /data/vendor/key_provisioning 0771 system system
+    restorecon_recursive /data/vendor/thh
+
+# ============================================
 # Sequential TEE Stack Startup
 # ============================================
-# Start helpers as soon as hwservicemanager is alive
 on property:init.svc.hwservicemanager=running
     start teei_capi_2_0
     start bp_kmsetkey_ca
 
-# Start keymaster stack after TEE helpers finish
 on property:init.svc.bp_kmsetkey_ca=stopped
     start keymaster-attestation
     start keymaster-4-0-beanpod
     start gatekeeper-1-0
 
 # ============================================
-# Data Directories (Must exist before decrypt)
+# Shutdown
 # ============================================
-on boot
-    mkdir /data/vendor 0755 system system
-    mkdir /data/vendor/thh 0755 system system
-    mkdir /data/vendor/thh/system 0755 system system
-    mkdir /data/vendor/thh/ta 0755 system system
-    mkdir /data/vendor/key_provisioning 0771 system system
-    restorecon_recursive /data/vendor/thh
-
-# ============================================
-# TWRP Interlock (Keep for compatibility)
-# ============================================
-on property:crypto.ready=1
-    # TWRP sets this when it begins decrypt; services are already running
-    # No action needed here anymore
-
 on property:twrp.decrypt.done=true
     stop gatekeeper-1-0
     stop keymaster-4-0-beanpod
