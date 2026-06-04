@@ -116,41 +116,21 @@ TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
 TW_EXCLUDE_DEFAULT_USB_INIT := true
 
 # TWRP Exclusion & Feature Flags
+TW_INPUT_BLACKLIST := "hct_battery"
 TW_EXCLUDE_TWRP_APP := true
 TW_DEFAULT_LANGUAGE := en
 TW_USE_TOOLBOX := true
+TW_NO_SCREEN_TIMEOUT := true
 TWRP_INCLUDE_LOGCAT := true
 TWRP_EVENT_LOGGING := true
-TW_NO_SCREEN_TIMEOUT := true
 RECOVERY_SDCARD_ON_DATA := true
 
-TW_INPUT_BLACKLIST := "hct_battery"
 TW_INCLUDE_FBE_METADATA_DECRYPT := true
 TW_INCLUDE_CRYPTO_FBE := true
 TW_INCLUDE_CRYPTO := true
 TW_USE_FSCRYPT_POLICY := 1
 TW_NEEDS_HW_PROPERTY_FIX := true
 BOARD_USES_METADATA_PARTITION := true
-
-DEVICE_LIB_PATH := $(DEVICE_PATH)/recovery/root/vendor/lib64
-TW_CUSTOM_KEYMASTER_PATH := /vendor/bin/hw/android.hardware.keymaster@4.0-service.beanpod
-TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
-    $(DEVICE_LIB_PATH)/libmtee.so \
-    $(DEVICE_LIB_PATH)/libTEECommon.so \
-    $(DEVICE_LIB_PATH)/libion_mtk.so \
-    $(DEVICE_LIB_PATH)/libkeymaster4.so \
-    $(DEVICE_LIB_PATH)/libkeymaster4support.so \
-    $(DEVICE_LIB_PATH)/libimsg_log.so \
-    $(DEVICE_LIB_PATH)/libcrypto-mdapp.so \
-    $(DEVICE_LIB_PATH)/libpuresoftkeymasterdevice.so \
-    $(DEVICE_LIB_PATH)/vendor.microtrust.hardware.capi@2.0.so \
-    $(DEVICE_LIB_PATH)/vendor.mediatek.hardware.keymaster_attestation@1.0.so \
-    $(DEVICE_LIB_PATH)/vendor.mediatek.hardware.keymaster_attestation@1.1.so \
-    $(DEVICE_LIB_PATH)/hw/gatekeeper.mt6765.so \
-    $(DEVICE_LIB_PATH)/hw/libSoftGatekeeper.so \
-    $(DEVICE_LIB_PATH)/hw/android.hardware.gatekeeper@1.0-impl.so
-# Pastikan jalur ini mengarah tepat ke lokasi file di device tree kamu
-
 
 # Security Patches & Version Override
 PLATFORM_SECURITY_PATCH := 2020-03-05
