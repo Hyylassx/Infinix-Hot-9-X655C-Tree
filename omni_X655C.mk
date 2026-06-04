@@ -40,6 +40,7 @@ PRODUCT_PACKAGES += \
     bp_kmsetkey_ca \
     logd \
     liblog \
+    libhwbinder \
     logcat 
 
 # 2. Config
