@@ -13,6 +13,7 @@ on init
 on fs
     write /sys/class/udc/musb-hdrc/device/cmode 1
     start hwservicemanager
+    start vndservicemanager
 
 on post-fs
     symlink /dev/block/sda /dev/block/mmcblk0boot0
