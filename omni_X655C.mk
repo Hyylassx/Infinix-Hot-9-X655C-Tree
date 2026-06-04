@@ -149,6 +149,4 @@ PRODUCT_COPY_FILES += \
 
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.crypto.state=encrypted \
-    ro.crypto.type=file \
     ro.vendor.build.security_patch=2020-03-05
