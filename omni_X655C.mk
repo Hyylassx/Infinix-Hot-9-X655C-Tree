@@ -49,7 +49,8 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/recovery/root/ueventd.mt6765.rc:recovery/root/ueventd.mt6765.rc \
     $(DEVICE_PATH)/recovery/root/vendor/firmware/novatek_ts_fw.bin:vendor/firmware/novatek_ts_fw.bin \
     $(DEVICE_PATH)/recovery/root/vendor/firmware/novatek_ts_mp.bin:vendor/firmware/novatek_ts_mp.bin \
-    $(DEVICE_PATH)/recovery/root/vndservice_contexts:recovery/root/vndservice_contexts 
+    $(DEVICE_PATH)/recovery/root/vndservice_contexts:recovery/root/vndservice_contexts
+
 
 # ============================================================
 # KEYMASTER / GATEKEEPER / MICROTRUST
