@@ -55,17 +55,14 @@ service gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
     seclabel u:r:recovery:s0
 
 # ============================================
-# ALL services start on boot (recovery-safe trigger)
+# Safe Boot Triggers (Only launch baseline hal)
 # ============================================
 on fs
     start hwservicemanager
 
 on boot
-    start teei_daemon
-    start teei_capi_2_0
-    start bp_kmsetkey_ca
-    start keymaster-4-0-beanpod
-    start gatekeeper-1-0
+    # Disabled crashing crypto engines on raw boot to let graphics load
+    # we can start these later via TWRP shell scripts or decryption triggers
 
 # ============================================
 # Shutdown
