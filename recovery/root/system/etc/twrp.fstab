@@ -2,18 +2,26 @@
 /boot           emmc    /dev/block/by-name/boot            flags=display="Boot";backup=1;flashimg=1
 /recovery       emmc    /dev/block/by-name/recovery        flags=display="Recovery";backup=1;flashimg=1
 
-# Main Partitions
-/system         ext4    /dev/block/mapper/system          flags=display="System";backup=1
-/vendor         ext4    /dev/block/mapper/vendor          flags=display="Vendor";backup=1
-/product        ext4    /dev/block/mapper/product         flags=display="Product";backup=1
+# Dynamic Partitions (Fixed mapper paths to TWRP-native logical syntax)
+/system_root    ext4    system                             flags=display="System";backup=1;logical
+/vendor         ext4    vendor                             flags=display="Vendor";backup=1;logical
+/product        ext4    product                            flags=display="Product";backup=1;logical
+
+# Dynamic Image Targets (Required for flashing custom GSIs/ROMs in TWRP)
+/system_image   emmc    system                             flags=display="System Image";backup=1;flashimg=1;logical
+/vendor_image   emmc    vendor                             flags=display="Vendor Image";backup=1;flashimg=1;logical
+/product_image  emmc    product                            flags=display="Product Image";backup=1;flashimg=1;logical
+
+# Main Storage & Cache
 /data           f2fs    /dev/block/by-name/userdata       flags=display="Data";backup=1;wipeingui
 /cache          ext4    /dev/block/by-name/cache          flags=display="Cache";wipeingui
 /metadata       ext4    /dev/block/by-name/metadata       flags=display="Metadata"
+/super          emmc    /dev/block/by-name/super           flags=display="Super Partition";backup=1;flashimg=1
 
 # NVRAM / IMEI Related
 /nvram          emmc    /dev/block/by-name/nvram          flags=display="NVRAM";backup=1
-/nvdata         ext4    /dev/block/by-name/nvdata         flags=display="NVData";backup=1
-/nvcfg          ext4    /dev/block/by-name/nvcfg          flags=display="NVCfg";backup=1
+/nvdata         ext4    /dev/block/by-name/nvdata         flags=display="NVData";backup=1;subpartitionof=/nvram
+/nvcfg          ext4    /dev/block/by-name/nvcfg          flags=display="NVCfg";backup=1;subpartitionof=/nvram
 
 # Persist & Security
 /persist        ext4    /dev/block/by-name/persist        flags=display="Persist";backup=1
@@ -24,6 +32,6 @@
 /dtbo           emmc    /dev/block/by-name/dtbo           flags=display="DTBO";backup=1;flashimg=1
 /vbmeta         emmc    /dev/block/by-name/vbmeta         flags=display="VBMeta";backup=1;flashimg=1
 
-# External Storage
-/voldmanaged    auto    /devices/platform/externdevice*   flags=display="MicroSD";storage;wipeingui;removable
-/usbotg         auto    /devices/platform/mt_usb*         flags=display="USB OTG";storage;wipeingui;removable
+# External Storage (Fixed block paths for reliable detection)
+/external_sd    auto    /dev/block/mmcblk1p1  /dev/block/mmcblk1  flags=display="Micro SD Card";storage;wipeingui;removable
+/usb_otg        auto    /dev/block/sda1       /dev/block/sda      flags=display="USB OTG";storage;wipeingui;removable
