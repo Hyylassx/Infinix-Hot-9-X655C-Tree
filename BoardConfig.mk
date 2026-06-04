@@ -7,6 +7,7 @@
 DEVICE_PATH := device/infinix/X655C
 
 ALLOW_MISSING_DEPENDENCIES := true
+TW_ALLOW_MISSING_PROP := true
 
 # Architecture
 TARGET_ARCH := arm64
