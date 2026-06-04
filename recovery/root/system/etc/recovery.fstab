@@ -1,9 +1,9 @@
 # Android fstab file for TWRP - Infinix X655C
 
-# Dynamic Partitions
-system      /system      ext4    ro      wait,logical,first_stage_mount
-vendor      /vendor      ext4    ro      wait,logical,first_stage_mount
-product     /product     ext4    ro      wait,logical,first_stage_mount
+# Dynamic Partitions (Removed first_stage_mount to prevent early property lockout)
+system      /system      ext4    ro      wait,logical
+vendor      /vendor      ext4    ro      wait,logical
+product     /product     ext4    ro      wait,logical
 
 # Core Partitions
 /dev/block/by-name/boot         /boot         emmc    defaults    defaults
@@ -12,8 +12,8 @@ product     /product     ext4    ro      wait,logical,first_stage_mount
 /dev/block/by-name/metadata     /metadata     ext4    noatime,nosuid,nodev,discard    wait,formattable
 /dev/block/by-name/super        /super        emmc    defaults    defaults
 
-# Data
-/dev/block/by-name/userdata     /data         f2fs    noatime,nosuid,nodev,discard    wait,check,formattable,latemount,fileencryption=aes-256-xts:aes-256-cts
+# Data (Stripped latemount and explicit encryption calls to stop SIGABRT)
+/dev/block/by-name/userdata     /data         f2fs    noatime,nosuid,nodev,discard    wait,check,formattable
 
 # Vendor / NVRAM
 /dev/block/by-name/md_udc       /md_udc                     ext4    noatime,nosuid,nodev,discard    wait,formattable
@@ -37,6 +37,6 @@ product     /product     ext4    ro      wait,logical,first_stage_mount
 /dev/block/by-name/vbmeta_system  /vbmeta_system   emmc    defaults    nofail
 /dev/block/by-name/vbmeta_vendor  /vbmeta_vendor   emmc    defaults    nofail
 
-# External Storage
-/devices/platform/externdevice*   auto    auto    defaults    voldmanaged=sdcard1:auto
-/devices/platform/mt_usb*         auto    auto    defaults    voldmanaged=usbotg:auto
+# External Storage (Simplified syntax to avoid vold flags errors)
+/dev/block/mmcblk1p1              /external_sd     auto    defaults    defaults
+/dev/block/sda1                   /usb_otg         auto    defaults    defaults
