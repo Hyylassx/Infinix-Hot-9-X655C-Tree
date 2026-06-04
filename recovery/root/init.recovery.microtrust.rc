@@ -132,6 +132,7 @@ on boot
 # Direct Crypto Stack Startup (Bypassing bp_kmsetkey)
 # ============================================
 on property:init.svc.hwservicemanager=running
+    start teei_daemon
     start teei_capi_2_0
     start keymaster-4-0-beanpod
     start gatekeeper-1-0
