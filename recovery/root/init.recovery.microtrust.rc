@@ -85,23 +85,20 @@ on boot
     chown system system /sys/bus/platform/devices/utos/unload_ut_drv
     chown system system /sys/bus/platform/devices/utos/notify_ree_dci_handler
 
-# ============================================================
-# INTERLOCKED TWRP DECRYPTION TRIGGER
-# ============================================================
-on property:crypto.ready=1
-    # Create directory array structures inside decrypted data boundaries
-    mkdir /data/vendor/thh 0755 system system
-    mkdir /data/vendor/thh/system 0755 system system
-    mkdir /data/vendor/thh/ta 0755 system system
-    mkdir /data/vendor/key_provisioning 0771 system system
-    restorecon_recursive /data/vendor/thh
-    
-    # Fire up the engine stack sequentially once the UI layout is safe
+    # Start TEE stack EARLY before TWRP FBE detection
     start teei_daemon
     start teei_capi_2_0
     start bp_kmsetkey_ca
     start keymaster-4-0-beanpod
     start gatekeeper-1-0
+
+# Keep data directory setup for when TWRP decrypts
+on property:crypto.ready=1
+    mkdir /data/vendor/thh 0755 system system
+    mkdir /data/vendor/thh/system 0755 system system
+    mkdir /data/vendor/thh/ta 0755 system system
+    mkdir /data/vendor/key_provisioning 0771 system system
+    restorecon_recursive /data/vendor/thh
 
 # ============================================
 # Shutdown
