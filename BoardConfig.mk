@@ -139,7 +139,8 @@ TW_USE_FSCRYPT_POLICY := 1
 # Force compiler to link your device's physical libraries
 TARGET_RECOVERY_DEVICE_MODULES += \
     libhwbinder \
-    android.hardware.boot@1.0
+    android.hardware.boot@1.0 \
+    vndservicemanager
 
 # Security Patches & Version Override
 PLATFORM_SECURITY_PATCH := 2020-03-05
