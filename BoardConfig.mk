@@ -126,12 +126,13 @@ TWRP_INCLUDE_LOGCAT := true
 TWRP_EVENT_LOGGING := true
 RECOVERY_SDCARD_ON_DATA := true
 
-TW_INCLUDE_FBE_METADATA_DECRYPT := true
-TW_INCLUDE_CRYPTO_FBE := true
-TW_INCLUDE_CRYPTO := true
-TW_USE_FSCRYPT_POLICY := 1
-TW_NEEDS_HW_PROPERTY_FIX := true
-BOARD_USES_METADATA_PARTITION := true
+# ============================================================
+# HARD OVERRIDE: DISABLE CRYPTO SUBROUTINES TO STOP SIGABRT
+# ============================================================
+TW_INCLUDE_CRYPTO := false
+TW_INCLUDE_CRYPTO_FBE := false
+TW_INCLUDE_FBE_METADATA_DECRYPT := false
+BOARD_USES_METADATA_PARTITION := false
 
 # Security Patches & Version Override
 PLATFORM_SECURITY_PATCH := 2020-03-05
