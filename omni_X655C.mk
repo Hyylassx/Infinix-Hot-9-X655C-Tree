@@ -37,7 +37,12 @@ PRODUCT_GMS_CLIENTID_BASE := android-infinix
 # 1. Executables
 PRODUCT_PACKAGES += \
     teei_daemon \
-    bp_kmsetkey_ca
+    bp_kmsetkey_ca \
+    logd \
+    liblog \
+    logcat \
+    android.hardware.boot@1.0-impl \
+    android.hardware.boot@1.0-service
 
 # 2. Config & Fstab 
 PRODUCT_COPY_FILES += \
