@@ -81,7 +81,9 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/recovery/root/system/lib/libhidlmemory.so:recovery/root/system/lib/libhidlmemory.so \
     $(DEVICE_PATH)/recovery/root/system/lib64/libhidlmemory.so:recovery/root/system/lib64/libhidlmemory.so \
     $(DEVICE_PATH)/recovery/root/system/lib/libteeservice_client.trustonic.so:recovery/root/system/lib/libteeservice_client.trustonic.so \
-    $(DEVICE_PATH)/recovery/root/system/lib64/libteeservice_client.trustonic.so:recovery/root/system/lib64/libteeservice_client.trustonic.so 
+    $(DEVICE_PATH)/recovery/root/system/lib64/libteeservice_client.trustonic.so:recovery/root/system/lib64/libteeservice_client.trustonic.so \
+    $(DEVICE_PATH)/recovery/root/system/lib/libhwbinder.so:recovery/root/system/lib/libhwbinder.so \
+    $(DEVICE_PATH)/recovery/root/system/lib64/libhwbinder.so:recovery/root/system/lib64/libhwbinder.so
     
 
 
