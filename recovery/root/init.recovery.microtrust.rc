@@ -19,7 +19,8 @@ service teei_daemon /vendor/bin/teei_daemon \
     -r 85f630e0f0964c5fa2cc268ce04e3da3 \
     -r 98fb95bcb4bf42d26473eae48690d7ea \
     -r 7b66512021214487ba710a51d7ea78fe \
-    -r 09010000000000000000000000000000
+    -r 09010000000000000000000000000000 \
+    -p /vendor/thh/ta/
     class core
     user system
     group system
@@ -30,6 +31,7 @@ service teei_capi_2_0 /vendor/bin/hw/vendor.microtrust.hardware.capi@2.0-service
     class core
     user system
     group system
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib
     disabled
     seclabel u:r:recovery:s0
 
@@ -90,13 +92,18 @@ on boot
     chown system system /sys/bus/platform/devices/utos/notify_ree_dci_handler
 
 # ============================================
-# Direct Crypto Stack Startup 
+# Direct Crypto Stack Startup (Urutan Antrean Berantai)
 # ============================================
 on property:init.svc.hwservicemanager=running
+    wait /dev/teei_client
     start teei_daemon
+
+on property:init.svc.teei_daemon=running
     start keymaster-4-0-beanpod
     start gatekeeper-1-0
     start keymaster-attestation
+
+on property:init.svc.keymaster-4-0-beanpod=running
     start teei_capi_2_0
 
 # ============================================
