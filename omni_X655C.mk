@@ -61,19 +61,6 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/recovery/root/vendor/bin/hw/vendor.mediatek.hardware.keymaster_attestation@1.1-service:vendor/bin/hw/vendor.mediatek.hardware.keymaster_attestation@1.1-service
 
 # ============================================================
-# SYSTEM LIBRARIES (Termasuk Perbaikan Token HIDL)
-# ============================================================
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/recovery/root/system/lib/libkeymaster_portable.so:system/lib/libkeymaster_portable.so \
-    $(DEVICE_PATH)/recovery/root/system/lib64/libkeymaster_portable.so:system/lib64/libkeymaster_portable.so \
-    $(DEVICE_PATH)/recovery/root/system/lib/libsoftkeymasterdevice.so:system/lib/libsoftkeymasterdevice.so \
-    $(DEVICE_PATH)/recovery/root/system/lib64/libsoftkeymasterdevice.so:system/lib64/libsoftkeymasterdevice.so \
-    $(DEVICE_PATH)/recovery/root/system/lib/libhidlmemory.so:system/lib/libhidlmemory.so \
-    $(DEVICE_PATH)/recovery/root/system/lib64/libhidlmemory.so:system/lib64/libhidlmemory.so \
-    $(DEVICE_PATH)/recovery/root/system/lib/android.hidl.memory.token@1.0.so:system/lib/android.hidl.memory.token@1.0.so \
-    $(DEVICE_PATH)/recovery/root/system/lib64/android.hidl.memory.token@1.0.so:system/lib64/android.hidl.memory.token@1.0.so
-
-# ============================================================
 # VENDOR LIBRARIES (32 BIT)
 # ============================================================
 PRODUCT_COPY_FILES += \
