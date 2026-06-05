@@ -131,7 +131,7 @@ TWRP_INCLUDE_LOGCAT := true
 TWRP_EVENT_LOGGING := true
 RECOVERY_SDCARD_ON_DATA := true
 
-# ============================================================
+ ============================================================
 # FINAL VERIFIED TWRP DECRYPTION & ENVIRONMENT OVERRIDES
 # ============================================================
 # Enable Decryption using MediaTek Vendor Blobs
@@ -146,9 +146,9 @@ TW_USE_FSCRYPT_POLICY := 2
 TARGET_RECOVERY_DEVICE_MODULES += \
     libhwbinder \
     android.hardware.boot@1.0 \
-    vndservicemanager
+    vndservicemanager \
+    android.hidl.memory.token@1.0
 
-# Security Patches & Version Override
 # Security Patches & Version Override (Aligned for Android 10 Property Space)
 PLATFORM_SECURITY_PATCH := 2020-03-05
 VENDOR_SECURITY_PATCH := 2020-03-05
