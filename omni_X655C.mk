@@ -68,7 +68,6 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/recovery/root/vendor/lib/libimsg_log.so:vendor/lib/libimsg_log.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib/libion_mtk.so:vendor/lib/libion_mtk.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib/libmtee.so:vendor/lib/libmtee.so \
-    $(DEVICE_PATH)/recovery/root/vendor/lib/libpuresoftkeymasterdevice.so:vendor/lib/libpuresoftkeymasterdevice.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib/libTEECommon.so:vendor/lib/libTEECommon.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib/vendor.microtrust.hardware.capi@2.0.so:vendor/lib/vendor.microtrust.hardware.capi@2.0.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib/vendor.mediatek.hardware.keymaster_attestation@1.0.so:vendor/lib/vendor.mediatek.hardware.keymaster_attestation@1.0.so \
@@ -83,7 +82,6 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/recovery/root/vendor/lib64/libion_mtk.so:vendor/lib64/libion_mtk.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib64/libkeymaster4.so:vendor/lib64/libkeymaster4.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib64/libmtee.so:vendor/lib64/libmtee.so \
-    $(DEVICE_PATH)/recovery/root/vendor/lib64/libpuresoftkeymasterdevice.so:vendor/lib64/libpuresoftkeymasterdevice.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib64/libTEECommon.so:vendor/lib64/libTEECommon.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib64/vendor.microtrust.hardware.capi@2.0.so:vendor/lib64/vendor.microtrust.hardware.capi@2.0.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib64/vendor.mediatek.hardware.keymaster_attestation@1.0.so:vendor/lib64/vendor.mediatek.hardware.keymaster_attestation@1.0.so \
