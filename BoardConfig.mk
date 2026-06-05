@@ -125,6 +125,7 @@ TW_EXCLUDE_TWRP_APP := true
 TW_DEFAULT_LANGUAGE := en
 TW_USE_TOOLBOX := true
 TW_NO_SCREEN_TIMEOUT := true
+TW_INCLUDE_FASTBOOTD := true
 TWRP_INCLUDE_LOGCAT := true
 TWRP_EVENT_LOGGING := true
 RECOVERY_SDCARD_ON_DATA := true
@@ -135,11 +136,12 @@ RECOVERY_SDCARD_ON_DATA := true
 # Enable Decryption using MediaTek Vendor Blobs
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
-TW_INCLUDE_FBE_METADATA_DECRYPT := true
-BOARD_USES_METADATA_PARTITION := true
-TW_USE_FSCRYPT_POLICY := 1
 
-# Force compiler to link your device's physical libraries
+# Corrected for Android 10 (VNDK 29) Native Layout
+BOARD_USES_METADATA_PARTITION := true
+TW_USE_FSCRYPT_POLICY := 2
+
+# Force low-level binders to register your services
 TARGET_RECOVERY_DEVICE_MODULES += \
     libhwbinder \
     android.hardware.boot@1.0 \
