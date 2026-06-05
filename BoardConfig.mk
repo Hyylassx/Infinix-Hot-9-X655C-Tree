@@ -51,6 +51,7 @@ BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
 BOARD_USES_MTK_HARDWARE := true
 BOARD_HAS_MTK_HARDWARE := true
 BOARD_PROPERTY_OVERRIDES_SPLIT_PRODUCT := true
+BOARD_PROPERTY_OVERRIDES_SPLIT_SEPOLICY := true
 
 # Kernel Configuration
 BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 androidboot.selinux=permissive androidboot.boot_devices=bootdevice androidboot.hardware=mt6765
@@ -126,6 +127,7 @@ TW_DEFAULT_LANGUAGE := en
 TW_USE_TOOLBOX := true
 TW_NO_SCREEN_TIMEOUT := true
 TW_INCLUDE_FASTBOOTD := true
+TW_SUPPORT_EMBEDDED_VINTF := true
 TWRP_INCLUDE_LOGCAT := true
 TWRP_EVENT_LOGGING := true
 RECOVERY_SDCARD_ON_DATA := true
@@ -134,15 +136,12 @@ RECOVERY_SDCARD_ON_DATA := true
 # FINAL VERIFIED TWRP DECRYPTION & ENVIRONMENT OVERRIDES
 # ============================================================
 # Enable Decryption using MediaTek Vendor Blobs
-TW_INCLUDE_CRYPTO := true
-TW_INCLUDE_CRYPTO_FBE := true
-BOARD_USES_METADATA_PARTITION := true
-TW_REPLACE_FBE_DECRYPTION_LIBS := true
-TW_INCLUDE_FBE_METADATA_DECRYPT := true
-TW_USE_FSCRYPT_POLICY := 1
-
-# WAJIB UNTUK ANDROID 10: Membaca manifest.xml di dalam Recovery
-TW_SUPPORT_EMBEDDED_VINTF := true
+#TW_INCLUDE_CRYPTO := true
+#TW_INCLUDE_CRYPTO_FBE := true
+#BOARD_USES_METADATA_PARTITION := true
+#TW_REPLACE_FBE_DECRYPTION_LIBS := true
+#TW_INCLUDE_FBE_METADATA_DECRYPT := true
+#TW_USE_FSCRYPT_POLICY := 1
 
 # Memaksa compiler memasukkan pengatur binder & biner keamanan ke ramdisk
 TARGET_RECOVERY_DEVICE_MODULES += \
