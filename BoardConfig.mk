@@ -137,14 +137,26 @@ RECOVERY_SDCARD_ON_DATA := true
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
 BOARD_USES_METADATA_PARTITION := true
+TW_REPLACE_FBE_DECRYPTION_LIBS := true
+TW_INCLUDE_FBE_METADATA_DECRYPT := true
 TW_USE_FSCRYPT_POLICY := 1
 
-# Force low-level binders to register your services
+# WAJIB UNTUK ANDROID 10: Membaca manifest.xml di dalam Recovery
+TW_SUPPORT_EMBEDDED_VINTF := true
+
+# Memaksa compiler memasukkan pengatur binder & biner keamanan ke ramdisk
 TARGET_RECOVERY_DEVICE_MODULES += \
+    servicemanager \
+    hwservicemanager \
+    vndservicemanager \
+    libhidlbase \
     libhwbinder \
     android.hardware.boot@1.0 \
-    vndservicemanager \
-    android.hidl.memory.token@1.0
+    android.hidl.memory.token@1.0 \
+    teei_daemon \
+    android.hardware.keymaster@4.0-service.beanpod \
+    android.hardware.gatekeeper@1.0-service \
+    vendor.microtrust.hardware.capi@2.0-service
 
 # Security Patches & Version Override (Aligned for Android 10 Property Space)
 PLATFORM_SECURITY_PATCH := 2020-03-05
