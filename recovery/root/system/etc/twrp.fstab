@@ -15,7 +15,7 @@
 # Main Storage & Cache (Linked key encryption directory target to match fscrypt v2)
 /data           f2fs    /dev/block/by-name/userdata       flags=display="Data";backup=1;wipeingui;fileencryption=aes-256-xts:aes-256-cts:v2
 /cache          ext4    /dev/block/by-name/cache          flags=display="Cache";wipeingui
-/metadata       ext4    /dev/block/by-name/metadata       flags=display="Metadata"
+/metadata       f2fs    /dev/block/by-name/metadata       flags=display="Metadata"
 /super          emmc    /dev/block/by-name/super           flags=display="Super Partition";backup=1;flashimg=1
 
 # NVRAM / IMEI Related
