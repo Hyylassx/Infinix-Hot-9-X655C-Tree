@@ -12,4 +12,6 @@ Arch: arm64-v8a
 Manufacturer: generic
 Model: Generic Device
 
-Currently Fixing Decryption, The ADB is Working, The Problem Is Freaking Decryption
+# Currently Fixing Decryption, The ADB is Working, The Problem Is Freaking Decryption
+# If You Want Trying The RECVOERY BUILD, My Github Action Workflow (BE CAREFUL, THIS IS STILL NOT UNSTABLE)
+# https://github.com/Hyylassx/x655c-recovery-build/releases
