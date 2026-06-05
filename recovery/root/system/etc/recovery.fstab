@@ -1,45 +1,19 @@
-# Android fstab file for recovery - Infinix X655C (Android 10)
 # <src>                                              <mnt_point>        <type>      <mnt_flags and options>                             <fs_mgr_flags>
-
-# Dynamic Partitions (TWRP logical mapping format)
 system                                               /system            ext4        ro                                                  wait,logical,first_stage_mount
 vendor                                               /vendor            ext4        ro                                                  wait,logical,first_stage_mount
 product                                              /product           ext4        ro                                                  wait,logical,first_stage_mount
 
-# Core Partitions
 /dev/block/by-name/boot                              /boot              emmc        defaults                                            defaults
 /dev/block/by-name/recovery                          /recovery          emmc        defaults                                            defaults
 /dev/block/by-name/cache                             /cache             ext4        noatime,nosuid,nodev,noauto_da_alloc,discard        wait,check,formattable
 /dev/block/by-name/super                             /super             emmc        defaults                                            defaults
 
-# Metadata Partition (FIXED: Changed from f2fs to ext4 for Android 10 MTK)
 /dev/block/by-name/metadata                          /metadata          ext4        noatime,nosuid,nodev,discard                        wait,formattable,first_stage_mount
-
-# Data Partition (FIXED: Added required Android 10 FBE decryption hooks)
 /dev/block/by-name/userdata                          /data              f2fs        noatime,nosuid,nodev,discard,usrquota,grpquota      wait,check,formattable,latemount,fileencryption=aes-256-xts:aes-256-cts:v2,keydirectory=/metadata/vold/metadata_encryption
 
-# Vendor / NVRAM
-/dev/block/by-name/md_udc                            /md_udc            ext4        noatime,nosuid,nodev,discard                        wait,formattable
-/dev/block/by-name/tranfs                            /tranfs            ext4        noatime,nosuid,nodev,discard                        wait,check,formattable,nofail
-/dev/block/by-name/protect1                          /mnt/vendor/protect_f  ext4    noatime,nosuid,nodev                                wait,check,formattable
-/dev/block/by-name/protect2                          /mnt/vendor/protect_s  ext4    noatime,nosuid,nodev                                wait,check,formattable
-/dev/block/by-name/nvdata                            /mnt/vendor/nvdata ext4        noatime,nosuid,nodev                                wait,check,formattable
-/dev/block/by-name/nvcfg                             /mnt/vendor/nvcfg  ext4        noatime,nosuid,nodev                                wait,check,formattable
 /dev/block/by-name/persist                           /mnt/vendor/persist    ext4    noatime,nosuid,nodev                                wait,check,formattable
-
-# Firmware / Security
 /dev/block/by-name/frp                               /frp               emmc        defaults                                            defaults
-/dev/block/by-name/nvram                             /nvram             emmc        defaults                                            defaults
-/dev/block/by-name/proinfo                           /proinfo           emmc        defaults                                            defaults
-/dev/block/by-name/lk                                /bootloader        emmc        defaults                                            defaults
-/dev/block/by-name/lk2                               /bootloader2       emmc        defaults                                            defaults
 /dev/block/by-name/para                              /misc              emmc        defaults                                            defaults
-/dev/block/by-name/logo                              /logo              emmc        defaults                                            defaults
-/dev/block/by-name/dtbo                              /dtbo              emmc        defaults                                            defaults
-/dev/block/by-name/vbmeta                            /vbmeta            emmc        defaults                                            defaults
-/dev/block/by-name/vbmeta_system                     /vbmeta_system     emmc        defaults                                            nofail
-/dev/block/by-name/vbmeta_vendor                     /vbmeta_vendor     emmc        defaults                                            nofail
 
-# External Storage
 /dev/block/mmcblk1p1                                 /external_sd       auto        defaults                                            defaults
 /dev/block/sda1                                      /usb_otg           auto        defaults                                            defaults
