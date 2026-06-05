@@ -34,3 +34,22 @@ on boot
     chown root root /dev/input/event3
     chown root root /dev/input/event4
     chown root root /dev/input/event5
+
+service logd /system/bin/logd
+    class core
+    user logd
+    group logd system package_info readproc
+    capabilities SYSLOG AUDIT_CONTROL
+    priority 10
+    writepid /dev/cpuset/system-background/tasks
+    seclabel u:r:logd:s0
+
+service logcat /system/bin/logcat -b all -v threadtime -f /tmp/logcat.txt
+    class boot
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
+
+on post-fs-data
+    start logd
