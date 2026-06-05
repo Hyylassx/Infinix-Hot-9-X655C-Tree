@@ -84,6 +84,7 @@ on post-fs-data
 on property:init.svc.hwservicemanager=running
     wait /dev/teei_client
     start teei_daemon
+    start vold
 
 on property:init.svc.teei_daemon=running
     # Memberi instruksi ke TWRP bahwa crypto stack siap
