@@ -32,8 +32,8 @@ TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
 TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
 
 # VINTF Manifest and Compatibility Matrix
-DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/recovery/root/vendor/etc/vintf/manifest.xml
-DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += $(DEVICE_PATH)/recovery/root/vendor/etc/vintf/compatibility_matrix.xml
+DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/recovery/root/vendor/etc/vintf/manifest.xml
+DEVICE_MATRIX_FILE := $(DEVICE_PATH)/recovery/root/vendor/etc/vintf/compatibility_matrix.xml
 
 # Platform / Bootloader
 TARGET_BOARD_PLATFORM := mt6765
