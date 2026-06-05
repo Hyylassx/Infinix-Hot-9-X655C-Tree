@@ -1,27 +1,44 @@
 import /init.recovery.microtrust.rc
 
 on init
+    # Paksa SELinux ke mode Permissive di awal boot recovery
+    setenforce 0
+
+    # Konfigurasi USB & Fastbootd ADB
     setprop sys.usb.configfs 1
     setprop sys.usb.ffs.aio_compat 1
     setprop sys.usb.controller musb-hdrc
     setprop ro.boot.usbcontroller musb-hdrc
+    
+    # Pembuatan Direktori Inti
     mkdir /tmp 0777 root root
     mkdir /data 0771 system system
     restorecon /tmp
-    export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/system/lib:/vendor/lib
+    
+    # Ekspor Jalur Pustaka Dinamis (Menambahkan /sbin untuk kompatibilitas TWRP)
+    export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/system/lib:/vendor/lib:/sbin
 
 on fs
     write /sys/class/udc/musb-hdrc/device/cmode 1
+    
+    # 1. Hubungkan dan Pasang Partisi Vendor di Awal Booting
+    wait /dev/block/by-name/vendor
+    mount ext4 /dev/block/by-name/vendor /vendor ro
+
+    # 2. Jalankan Tiga Layanan IPC Binder Utama untuk Android 10
+    start servicemanager
     start hwservicemanager
     start vndservicemanager
 
 on post-fs
+    # Tautan Simbolik Preloader (Khas Chipset MediaTek)
     symlink /dev/block/sda /dev/block/mmcblk0boot0
     symlink /dev/block/sdb /dev/block/mmcblk0boot1
     symlink /dev/block/mmcblk0boot0 /dev/block/platform/bootdevice/by-name/preloader_a
     symlink /dev/block/mmcblk0boot1 /dev/block/platform/bootdevice/by-name/preloader_b
 
 on boot
+    # Perizinan Input Sentuh (Touchscreen Driver)
     chmod 0666 /dev/input/event0
     chmod 0666 /dev/input/event1
     chmod 0666 /dev/input/event2
@@ -34,6 +51,21 @@ on boot
     chown root root /dev/input/event3
     chown root root /dev/input/event4
     chown root root /dev/input/event5
+
+on post-fs-data
+    # Nyalakan Logging Sistem Pemulihan
+    start logd
+
+# ============================================================
+# DEFINISI CORE SERVICES ANDROID 10 & TWRP
+# ============================================================
+
+service servicemanager /system/bin/servicemanager
+    class core
+    user root
+    group root readproc
+    disabled
+    seclabel u:r:recovery:s0
 
 service logd /system/bin/logd
     class core
@@ -50,6 +82,3 @@ service logcat /system/bin/logcat -b all -v threadtime -f /tmp/logcat.txt
     group root
     disabled
     seclabel u:r:recovery:s0
-
-on post-fs-data
-    start logd
