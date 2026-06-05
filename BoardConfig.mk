@@ -136,8 +136,8 @@ RECOVERY_SDCARD_ON_DATA := true
 # FINAL VERIFIED TWRP DECRYPTION & ENVIRONMENT OVERRIDES
 # ============================================================
 # Enable Decryption using MediaTek Vendor Blobs
-#TW_INCLUDE_CRYPTO := true
-#TW_INCLUDE_CRYPTO_FBE := true
+TW_INCLUDE_CRYPTO := false
+TW_INCLUDE_CRYPTO_FBE := false
 #BOARD_USES_METADATA_PARTITION := true
 #TW_REPLACE_FBE_DECRYPTION_LIBS := true
 #TW_INCLUDE_FBE_METADATA_DECRYPT := true
