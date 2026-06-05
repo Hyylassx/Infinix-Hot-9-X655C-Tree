@@ -10,7 +10,7 @@
 /dev/block/by-name/boot                              /boot              emmc        defaults                                            defaults
 /dev/block/by-name/recovery                          /recovery          emmc        defaults                                            defaults
 /dev/block/by-name/cache                             /cache             ext4        noatime,nosuid,nodev,noauto_da_alloc,discard        wait,check,formattable
-/dev/block/by-name/metadata                          /metadata          ext4        noatime,nosuid,nodev,discard                        wait,formattable
+/dev/block/by-name/metadata                          /metadata          f2fs        noatime,nosuid,nodev,discard                        wait,formattable
 /dev/block/by-name/super                             /super             emmc        defaults                                            defaults
 
 # Data (Fixed F2FS options to prevent boot loop crashes)
