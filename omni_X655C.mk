@@ -64,8 +64,6 @@ PRODUCT_COPY_FILES += \
 # SYSTEM LIBRARIES (Termasuk Perbaikan Token HIDL)
 # ============================================================
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/recovery/root/system/lib/libkeymaster_messages.so:system/lib/libkeymaster_messages.so \
-    $(DEVICE_PATH)/recovery/root/system/lib64/libkeymaster_messages.so:system/lib64/libkeymaster_messages.so \
     $(DEVICE_PATH)/recovery/root/system/lib/libkeymaster_portable.so:system/lib/libkeymaster_portable.so \
     $(DEVICE_PATH)/recovery/root/system/lib64/libkeymaster_portable.so:system/lib64/libkeymaster_portable.so \
     $(DEVICE_PATH)/recovery/root/system/lib/libsoftkeymasterdevice.so:system/lib/libsoftkeymasterdevice.so \
