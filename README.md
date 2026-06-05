@@ -17,6 +17,8 @@ Model: Infinix Hot 9
 
 Board: Infinix-X655C
 
+Base On: X655C-H6211ABKG-Q-OP-220314V315 
+
 # Currently Fixing Decryption, The ADB is Working, The Problem Is Freaking Decryption
 # If You Want Trying The RECVOERY BUILD, My Github Action Workflow (BE CAREFUL, THIS IS STILL NOT UNSTABLE)
 # https://github.com/Hyylassx/x655c-recovery-build/releases
