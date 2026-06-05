@@ -131,7 +131,7 @@ TWRP_INCLUDE_LOGCAT := true
 TWRP_EVENT_LOGGING := true
 RECOVERY_SDCARD_ON_DATA := true
 
- ============================================================
+# ============================================================
 # FINAL VERIFIED TWRP DECRYPTION & ENVIRONMENT OVERRIDES
 # ============================================================
 # Enable Decryption using MediaTek Vendor Blobs
