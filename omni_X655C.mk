@@ -67,7 +67,6 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/recovery/root/vendor/lib/libcrypto-mdapp.so:vendor/lib/libcrypto-mdapp.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib/libimsg_log.so:vendor/lib/libimsg_log.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib/libion_mtk.so:vendor/lib/libion_mtk.so \
-    $(DEVICE_PATH)/recovery/root/vendor/lib/libkeymaster4support.so:vendor/lib/libkeymaster4support.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib/libmtee.so:vendor/lib/libmtee.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib/libpuresoftkeymasterdevice.so:vendor/lib/libpuresoftkeymasterdevice.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib/libTEECommon.so:vendor/lib/libTEECommon.so \
