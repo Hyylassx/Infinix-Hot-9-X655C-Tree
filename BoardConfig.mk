@@ -50,6 +50,7 @@ BOARD_USES_RECOVERY_AS_BOOT := false
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
 BOARD_USES_MTK_HARDWARE := true
 BOARD_HAS_MTK_HARDWARE := true
+BOARD_PROPERTY_OVERRIDES_SPLIT_PRODUCT := true
 
 # Kernel Configuration
 BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 androidboot.selinux=permissive androidboot.boot_devices=bootdevice androidboot.hardware=mt6765
@@ -148,6 +149,7 @@ TARGET_RECOVERY_DEVICE_MODULES += \
     vndservicemanager
 
 # Security Patches & Version Override
+# Security Patches & Version Override (Aligned for Android 10 Property Space)
 PLATFORM_SECURITY_PATCH := 2020-03-05
 VENDOR_SECURITY_PATCH := 2020-03-05
 PLATFORM_VERSION := 10
