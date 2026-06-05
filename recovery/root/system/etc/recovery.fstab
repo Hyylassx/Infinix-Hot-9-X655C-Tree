@@ -1,20 +1,22 @@
 # Android fstab file for recovery - Infinix X655C (Android 10)
 # <src>                                              <mnt_point>        <type>      <mnt_flags and options>                             <fs_mgr_flags>
 
-# Dynamic Partitions
-/dev/block/mapper/system                             /system            ext4        ro                                                  wait,logical
-/dev/block/mapper/vendor                             /vendor            ext4        ro                                                  wait,logical
-/dev/block/mapper/product                            /product           ext4        ro                                                  wait,logical
+# Dynamic Partitions (TWRP logical mapping format)
+system                                               /system            ext4        ro                                                  wait,logical,first_stage_mount
+vendor                                               /vendor            ext4        ro                                                  wait,logical,first_stage_mount
+product                                              /product           ext4        ro                                                  wait,logical,first_stage_mount
 
 # Core Partitions
 /dev/block/by-name/boot                              /boot              emmc        defaults                                            defaults
 /dev/block/by-name/recovery                          /recovery          emmc        defaults                                            defaults
 /dev/block/by-name/cache                             /cache             ext4        noatime,nosuid,nodev,noauto_da_alloc,discard        wait,check,formattable
-/dev/block/by-name/metadata                          /metadata          f2fs        noatime,nosuid,nodev,discard                        wait,formattable
 /dev/block/by-name/super                             /super             emmc        defaults                                            defaults
 
-# Data (Fixed F2FS options to prevent boot loop crashes)
-/dev/block/by-name/userdata                          /data              f2fs        noatime,nosuid,nodev,discard,usrquota,grpquota      wait,check,formattable
+# Metadata Partition (FIXED: Changed from f2fs to ext4 for Android 10 MTK)
+/dev/block/by-name/metadata                          /metadata          ext4        noatime,nosuid,nodev,discard                        wait,formattable,first_stage_mount
+
+# Data Partition (FIXED: Added required Android 10 FBE decryption hooks)
+/dev/block/by-name/userdata                          /data              f2fs        noatime,nosuid,nodev,discard,usrquota,grpquota      wait,check,formattable,latemount,fileencryption=aes-256-xts:aes-256-cts:v2,keydirectory=/metadata/vold/metadata_encryption
 
 # Vendor / NVRAM
 /dev/block/by-name/md_udc                            /md_udc            ext4        noatime,nosuid,nodev,discard                        wait,formattable
