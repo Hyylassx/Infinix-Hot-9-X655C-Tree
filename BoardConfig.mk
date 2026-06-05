@@ -135,12 +135,10 @@ RECOVERY_SDCARD_ON_DATA := true
 # FINAL VERIFIED TWRP DECRYPTION & ENVIRONMENT OVERRIDES
 # ============================================================
 # Enable Decryption using MediaTek Vendor Blobs
-TW_INCLUDE_CRYPTO := true
-TW_INCLUDE_CRYPTO_FBE := true
-
-# Corrected for Android 10 (VNDK 29) Native Layout
-BOARD_USES_METADATA_PARTITION := true
-TW_USE_FSCRYPT_POLICY := 2
+#TW_INCLUDE_CRYPTO := true
+#TW_INCLUDE_CRYPTO_FBE := true
+#BOARD_USES_METADATA_PARTITION := true
+#TW_USE_FSCRYPT_POLICY := 1
 
 # Force low-level binders to register your services
 TARGET_RECOVERY_DEVICE_MODULES += \
