@@ -2,9 +2,9 @@
 # <src>                                              <mnt_point>        <type>      <mnt_flags and options>                             <fs_mgr_flags>
 
 # Dynamic Partitions
-system                                               /system            ext4        ro                                                  wait,logical
-vendor                                               /vendor            ext4        ro                                                  wait,logical
-product                                              /product           ext4        ro                                                  wait,logical
+/dev/block/mapper/system                             /system            ext4        ro                                                  wait,logical
+/dev/block/mapper/vendor                             /vendor            ext4        ro                                                  wait,logical
+/dev/block/mapper/product                            /product           ext4        ro                                                  wait,logical
 
 # Core Partitions
 /dev/block/by-name/boot                              /boot              emmc        defaults                                            defaults
