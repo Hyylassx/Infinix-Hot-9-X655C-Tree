@@ -1,5 +1,0 @@
-ro.twrp.boot             u:object_r:recovery_prop:s0
-ro.twrp.version          u:object_r:recovery_prop:s0
-ro.twrp.target.devices   u:object_r:recovery_prop:s0
-twrp.crash_counter       u:object_r:recovery_prop:s0
-crypto.ready             u:object_r:recovery_prop:s0
