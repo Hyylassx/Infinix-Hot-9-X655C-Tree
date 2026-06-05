@@ -1,16 +1,23 @@
+# Common Raw Partitions
 /boot           emmc    /dev/block/by-name/boot            flags=display="Boot";backup=1;flashimg=1
 /recovery       emmc    /dev/block/by-name/recovery        flags=display="Recovery";backup=1;flashimg=1
+
+# Dynamic Logical Image Targets (Allows flashing custom GSIs/ROMs via TWRP UI)
 /system_image   emmc    system                             flags=display="System Image";backup=1;flashimg=1;logical
 /vendor_image   emmc    vendor                             flags=display="Vendor Image";backup=1;flashimg=1;logical
 /product_image  emmc    product                            flags=display="Product Image";backup=1;flashimg=1;logical
 /super          emmc    /dev/block/by-name/super           flags=display="Super Partition";backup=1;flashimg=1
+
+# MediaTek NVRAM / IMEI Backup Options
 /nvram          emmc    /dev/block/by-name/nvram          flags=display="NVRAM";backup=1
 /nvdata         ext4    /dev/block/by-name/nvdata         flags=display="NVData";backup=1;subpartitionof=/nvram
 /nvcfg          ext4    /dev/block/by-name/nvcfg          flags=display="NVCfg";backup=1;subpartitionof=/nvram
-/persist        ext4    /dev/block/by-name/persist        flags=display="Persist";backup=1
-/frp            emmc    /dev/block/by-name/frp            flags=display="FRP";backup=1
+
+# Firmware, Security, and Core Tables
 /logo           emmc    /dev/block/by-name/logo           flags=display="Logo";backup=1;flashimg=1
 /dtbo           emmc    /dev/block/by-name/dtbo           flags=display="DTBO";backup=1;flashimg=1
 /vbmeta         emmc    /dev/block/by-name/vbmeta         flags=display="VBMeta";backup=1;flashimg=1
+
+# External Removable Storage
 /external_sd    auto    /dev/block/mmcblk1p1  /dev/block/mmcblk1  flags=display="Micro SD Card";storage;wipeingui;removable
 /usb_otg        auto    /dev/block/sda1       /dev/block/sda      flags=display="USB OTG";storage;wipeingui;removable
