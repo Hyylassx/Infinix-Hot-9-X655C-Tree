@@ -31,16 +31,6 @@ service teei_capi_2_0 /vendor/bin/hw/vendor.microtrust.hardware.capi@2.0-service
     user system
     group system
     disabled
-    oneshot
-    seclabel u:r:recovery:s0
-
-# bp_kmsetkey_ca is bypassed; kept here but disabled
-service bp_kmsetkey_ca /vendor/bin/bp_kmsetkey_ca
-    class core
-    user system
-    group system
-    disabled
-    oneshot
     seclabel u:r:recovery:s0
 
 service keymaster-attestation /vendor/bin/hw/vendor.mediatek.hardware.keymaster_attestation@1.1-service
@@ -69,9 +59,6 @@ service gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
 # ============================================
 # TEE Device Nodes
 # ============================================
-# ============================================
-# TEE Device Nodes (Safe Node Assignment)
-# ============================================
 on fs
     chmod 0660 /dev/teei_client
     chown system system /dev/teei_client
@@ -91,7 +78,6 @@ on fs
     chown system system /dev/emmcrpmb0
     chown system system /dev/utr_tui
     chmod 0660 /dev/utr_tui
-    # DO NOT start teei_daemon here anymore
 
 # ============================================
 # TEE Directory Tree Layout
@@ -103,40 +89,15 @@ on boot
     chown system system /sys/bus/platform/devices/utos/unload_ut_drv
     chown system system /sys/bus/platform/devices/utos/notify_ree_dci_handler
 
-    mkdir /data/vendor 0755 system system
-    mkdir /data/vendor/thh 0755 system system
-    mkdir /data/vendor/thh/system 0755 system system
-    mkdir /data/vendor/thh/tee_00 0755 system system
-    mkdir /data/vendor/thh/tee_01 0755 system system
-    mkdir /data/vendor/thh/tee_02 0755 system system
-    mkdir /data/vendor/thh/tee_03 0755 system system
-    mkdir /data/vendor/thh/tee_04 0755 system system
-    mkdir /data/vendor/thh/tee_05 0755 system system
-    mkdir /data/vendor/thh/tee_06 0755 system system
-    mkdir /data/vendor/thh/tee_07 0755 system system
-    mkdir /data/vendor/thh/tee 0755 system system
-    mkdir /data/vendor/thh/tee/tas 0755 system system
-    mkdir /data/vendor/thh/tee_08 0755 system system
-    mkdir /data/vendor/thh/tee_09 0755 system system
-    mkdir /data/vendor/thh/tee_0A 0755 system system
-    mkdir /data/vendor/thh/tee_0B 0755 system system
-    mkdir /data/vendor/thh/tee_0C 0755 system system
-    mkdir /data/vendor/thh/tee_0D 0755 system system
-    mkdir /data/vendor/thh/tee_0E 0755 system system
-    mkdir /data/vendor/thh/tee_0F 0755 system system
-    mkdir /data/vendor/thh/ta 0755 system system
-    mkdir /data/vendor/key_provisioning 0771 system system
-    restorecon_recursive /data/vendor/thh
-
 # ============================================
-# Direct Crypto Stack Startup (Bypassing bp_kmsetkey)
+# Direct Crypto Stack Startup 
 # ============================================
 on property:init.svc.hwservicemanager=running
     start teei_daemon
-    start teei_capi_2_0
     start keymaster-4-0-beanpod
     start gatekeeper-1-0
     start keymaster-attestation
+    start teei_capi_2_0
 
 # ============================================
 # Shutdown
