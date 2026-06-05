@@ -54,7 +54,7 @@ BOARD_PROPERTY_OVERRIDES_SPLIT_PRODUCT := true
 BOARD_PROPERTY_OVERRIDES_SPLIT_SEPOLICY := true
 
 # Kernel Configuration
-BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 androidboot.selinux=permissive androidboot.boot_devices=bootdevice androidboot.hardware=mt6765
+BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 androidboot.selinux=permissive androidboot.boot_devices=bootdevice androidboot.hardware=mt6765 androidboot.logical_partitions=1
 BOARD_BOOTIMG_HEADER_VERSION := 2
 BOARD_KERNEL_IMAGE_NAME := Image.gz
 BOARD_KERNEL_BASE := 0x40078000
