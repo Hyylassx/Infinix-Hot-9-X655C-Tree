@@ -12,3 +12,4 @@ Arch: arm64-v8a
 Manufacturer: generic
 Model: Generic Device
 
+Currently Fixing Decryption, The ADB is Working, The Problem Is Freaking Decryption
