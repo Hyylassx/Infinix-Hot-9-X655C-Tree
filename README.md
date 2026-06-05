@@ -11,6 +11,7 @@ this tool Developed by [Melek Saidani](https://www.facebook.com/no.idea.120/)
 Arch: arm64-v8a
 Manufacturer: Infinix
 Model: Infinix Hot 9
+Board: Infinix-X655C
 
 # Currently Fixing Decryption, The ADB is Working, The Problem Is Freaking Decryption
 # If You Want Trying The RECVOERY BUILD, My Github Action Workflow (BE CAREFUL, THIS IS STILL NOT UNSTABLE)
