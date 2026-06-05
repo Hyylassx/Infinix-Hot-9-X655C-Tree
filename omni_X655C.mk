@@ -90,7 +90,6 @@ PRODUCT_COPY_FILES += \
 # HARDWARE MODULES (32 BIT)
 # ============================================================
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/recovery/root/vendor/lib/hw/android.hardware.gatekeeper@1.0-impl.so:vendor/lib/hw/android.hardware.gatekeeper@1.0-impl.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib/hw/gatekeeper.mt6765.so:vendor/lib/hw/gatekeeper.mt6765.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib/hw/libSoftGatekeeper.so:vendor/lib/hw/libSoftGatekeeper.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib/hw/vendor.mediatek.hardware.keymaster_attestation@1.1-impl.so:vendor/lib/hw/vendor.mediatek.hardware.keymaster_attestation@1.1-impl.so
@@ -99,7 +98,6 @@ PRODUCT_COPY_FILES += \
 # HARDWARE MODULES (64 BIT)
 # ============================================================
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/recovery/root/vendor/lib64/hw/android.hardware.gatekeeper@1.0-impl.so:vendor/lib64/hw/android.hardware.gatekeeper@1.0-impl.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib64/hw/gatekeeper.mt6765.so:vendor/lib64/hw/gatekeeper.mt6765.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib64/hw/libSoftGatekeeper.so:vendor/lib64/hw/libSoftGatekeeper.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib64/hw/vendor.mediatek.hardware.keymaster_attestation@1.1-impl.so:vendor/lib64/hw/vendor.mediatek.hardware.keymaster_attestation@1.1-impl.so
