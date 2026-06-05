@@ -30,6 +30,7 @@ PRODUCT_PLATFORM := mt6765
 
 # Dynamic Partition Configuration
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
+PRODUCT_ENFORCE_VINTF_MANIFEST := false
 
 # Base Client ID / Fingerprint
 PRODUCT_GMS_CLIENTID_BASE := android-infinix
