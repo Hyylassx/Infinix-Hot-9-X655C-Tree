@@ -79,10 +79,4 @@ service logcat /system/bin/logcat -b all -v threadtime -f /tmp/logcat.txt
     disabled
     seclabel u:r:recovery:s0
 
-service vold /system/bin/vold --nocrypt --fscrypt=2:vold
-    class core
-    ioprio be 2
-    writepid /dev/cpuset/foreground/tasks
-    shutdown critical
-    group root reserved_disk
-    seclabel u:r:vold:s0
+# REMOVED: vold service - we're using native TWRP crypto, not vold
