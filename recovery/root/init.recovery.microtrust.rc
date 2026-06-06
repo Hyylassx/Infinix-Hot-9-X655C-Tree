@@ -1,12 +1,11 @@
 # ============================================================
-# LAYANAN KRIPTOGRAFI MICROTRUST BEANPOD (TWRP ROOT ENVIRONMENT)
+# MICROTRUST BEANPOD CRYPTO SERVICES (TWRP)
 # ============================================================
 
 service teei_daemon /vendor/bin/teei_daemon -r 020b0000000000000000000000000000 -r 020f0000000000000000000000000000 -r 06090000000000000000000000000000 -r 05120000000000000000000000000000 -r 40188311faf343488db888ad39496f9a -r 07060000000000000000000000007169 -r 9073f03a9618383bb1856eb3f990babd -r 08050000000000000000000000003419 -r 5020170115e016302017012521300000 -r 0f5eed3c3b5a47afacca69a84bf0efad -r 07407000000000000000000000000000 -r 05160000000000000000000000000000 -r 91dba524a6e24909acc48abd7163121a -r 08030000000000000000000000000000 -r 85f630e0f0964c5fa2cc268ce04e3da3 -r 98fb95bcb4bf42d26473eae48690d7ea -r 7b66512021214487ba710a51d7ea78fe -r 09010000000000000000000000000000
     class core
     user root
     group root
-    disabled
     seclabel u:r:recovery:s0
 
 service teei_capi_2_0 /vendor/bin/hw/vendor.microtrust.hardware.capi@2.0-service
@@ -14,14 +13,12 @@ service teei_capi_2_0 /vendor/bin/hw/vendor.microtrust.hardware.capi@2.0-service
     user root
     group root
     setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
-    disabled
     seclabel u:r:recovery:s0
 
 service keymaster-attestation /vendor/bin/hw/vendor.mediatek.hardware.keymaster_attestation@1.1-service
     class core
     user root
     group root
-    disabled
     seclabel u:r:recovery:s0
 
 service keymaster-4-0-beanpod /vendor/bin/hw/android.hardware.keymaster@4.0-service.beanpod
@@ -29,7 +26,6 @@ service keymaster-4-0-beanpod /vendor/bin/hw/android.hardware.keymaster@4.0-serv
     user root
     group root
     setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
-    disabled
     seclabel u:r:recovery:s0
 
 service gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
@@ -37,13 +33,19 @@ service gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
     user root
     group root
     setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
-    disabled
     seclabel u:r:recovery:s0
 
 # ============================================
-# TEE Device Nodes
+# TEE Device Nodes + KEYMASTER SYMLINK
 # ============================================
 on fs
+    # KEYMASTER SYMLINK - Maps TEEI keymaster to standard path
+    symlink /dev/ut_keymaster /dev/keymaster
+    symlink /dev/ut_keymaster /dev/keymaster0
+    chmod 0660 /dev/keymaster
+    chown system drmrpc /dev/keymaster
+    
+    # TEEI devices
     chmod 0660 /dev/teei_client
     chown system system /dev/teei_client
     chmod 0660 /dev/teei_config
@@ -64,7 +66,7 @@ on fs
     chmod 0660 /dev/utr_tui
 
 # ============================================
-# TEE Directory Tree Layout
+# TEE Directory Tree
 # ============================================
 on boot
     chown system system /sys/bus/platform/devices/utos/dcih_notify_test
@@ -74,12 +76,11 @@ on boot
     chown system system /sys/bus/platform/devices/utos/notify_ree_dci_handler
 
 on post-fs-data
-    # Wajib dibuat agar teei_daemon tidak mengalami crash saat membaca data
     mkdir /data/vendor/thh 0755 system system
     mkdir /data/vendor/thh/tee_00 0755 system system
 
 # ============================================
-# Direct Crypto Stack Startup (Urutan Antrean Berantai)
+# Crypto Stack Startup Chain
 # ============================================
 on property:init.svc.hwservicemanager=running
     wait /dev/teei_client
@@ -87,7 +88,6 @@ on property:init.svc.hwservicemanager=running
     start vold
 
 on property:init.svc.teei_daemon=running
-    # Memberi instruksi ke TWRP bahwa crypto stack siap
     setprop crypto.ready 1
     start keymaster-4-0-beanpod
     start gatekeeper-1-0
@@ -97,7 +97,7 @@ on property:init.svc.keymaster-4-0-beanpod=running
     start teei_capi_2_0
 
 # ============================================
-# Shutdown / Clean Up
+# Cleanup
 # ============================================
 on property:twrp.decrypt.done=true
     stop gatekeeper-1-0
