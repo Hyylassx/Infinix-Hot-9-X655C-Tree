@@ -12,7 +12,6 @@ sys.usb.ffs.aio_compat=true
 ro.sf.lcd_density=320
 ro.board.platform=mt6765
 ro.hardware=mt6765
-ro.boot.hardware=mt6765
 ro.vendor.mediatek.platform=MT6765
 ro.hardware.egl=mali
 ro.odm.tee=2
