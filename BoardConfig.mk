@@ -147,7 +147,7 @@ TW_INCLUDE_FBE_METADATA_DECRYPT := true
 TW_USE_FSCRYPT_POLICY := 1
 BOARD_USES_METADATA_PARTITION := true
 
-# Memaksa compiler memasukkan pengatur binder & biner keamanan ke ramdisk
+# 
 TARGET_RECOVERY_DEVICE_MODULES += \
     servicemanager \
     hwservicemanager \
