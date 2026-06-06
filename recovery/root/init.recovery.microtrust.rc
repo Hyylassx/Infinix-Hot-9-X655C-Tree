@@ -85,7 +85,7 @@ on post-fs-data
 on property:init.svc.hwservicemanager=running
     wait /dev/teei_client
     start teei_daemon
-    start vold
+    # REMOVED: start vold (not using vold crypto)
 
 on property:init.svc.teei_daemon=running
     setprop crypto.ready 1
