@@ -153,8 +153,6 @@ TARGET_RECOVERY_DEVICE_MODULES += \
     servicemanager \
     hwservicemanager \
     vndservicemanager \
-    vold \
-    vold_prepare_subdirs \
     libhidlbase \
     libhwbinder \
     android.hardware.boot@1.0 \
