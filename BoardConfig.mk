@@ -136,37 +136,32 @@ TWRP_EVENT_LOGGING := true
 RECOVERY_SDCARD_ON_DATA := true
 
 # ============================================================
-# FINAL VERIFIED TWRP DECRYPTION & ENVIRONMENT OVERRIDES
+# TWRP DECRYPTION - Native Crypto with TEEI Symlink
 # ============================================================
-# Enable Decryption using MediaTek Vendor Blobs
+
+# Enable native TWRP crypto (will use /dev/keymaster symlink)
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
-TW_CRYPTO_USE_SYSTEM_VOLD := true
-TW_CRYPTO_SYSTEM_VOLD_DEBUG := true
+
+# DO NOT USE VOLD - it's broken on this device!
+# TW_CRYPTO_USE_SYSTEM_VOLD := true      ← REMOVE
+# TW_CRYPTO_SYSTEM_VOLD_DEBUG := true    ← REMOVE
+
+# Keep these
 TW_SKIP_METADATA_ENCRYPTION := true
 TW_SELINUX_RELEASE_PERMISSIVE := true
-
-#TW_REPLACE_FBE_DECRYPTION_LIBS := true
-#TW_INCLUDE_FBE_METADATA_DECRYPT := true
-
-TW_USE_FSCRYPT_POLICY := 1
 BOARD_USES_METADATA_PARTITION := true
 
-# 
+# Remove these - not needed with symlink approach
+# TW_USE_FSCRYPT_POLICY := 1             ← REMOVE
+
+# TEEI services only (NO vold!)
 TARGET_RECOVERY_DEVICE_MODULES += \
-    servicemanager \
-    hwservicemanager \
-    vndservicemanager \
-    vold \
-    vold_prepare_subdirs \
-    libhidlbase \
-    libhwbinder \
-    android.hardware.boot@1.0 \
-    android.hidl.memory.token@1.0 \
     teei_daemon \
+    teei_capi_2_0 \
     android.hardware.keymaster@4.0-service.beanpod \
     android.hardware.gatekeeper@1.0-service \
-    vendor.microtrust.hardware.capi@2.0-service
+    keymaster-attestation
 
 # Security Patches & Version Override (Aligned for Android 10 Property Space)
 PLATFORM_SECURITY_PATCH := 2020-03-05
