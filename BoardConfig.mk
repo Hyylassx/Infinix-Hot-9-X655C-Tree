@@ -141,7 +141,6 @@ RECOVERY_SDCARD_ON_DATA := true
 # Enable Decryption using MediaTek Vendor Blobs
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
-TW_CRYPTO_USE_SYSTEM_VOLD := true
 TW_SELINUX_RELEASE_PERMISSIVE := true
 TW_REPLACE_FBE_DECRYPTION_LIBS := true
 TW_INCLUDE_FBE_METADATA_DECRYPT := true
@@ -153,6 +152,8 @@ TARGET_RECOVERY_DEVICE_MODULES += \
     servicemanager \
     hwservicemanager \
     vndservicemanager \
+    vold \
+    vold_prepare_subdirs \
     libhidlbase \
     libhwbinder \
     android.hardware.boot@1.0 \
