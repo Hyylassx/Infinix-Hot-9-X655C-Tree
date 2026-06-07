@@ -151,6 +151,7 @@ TW_INCLUDE_CRYPTO_FBE := true
 TW_SKIP_METADATA_ENCRYPTION := true
 TW_SELINUX_RELEASE_PERMISSIVE := true
 BOARD_USES_METADATA_PARTITION := true
+TW_FORCE_KEY_DIRECTORY := "/data/unencrypted/key"
 
 # Remove these - not needed with symlink approach
 # TW_USE_FSCRYPT_POLICY := 1             ← REMOVE
