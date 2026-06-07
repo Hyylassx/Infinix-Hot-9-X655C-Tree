@@ -6,9 +6,9 @@
 
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/twrp_X655C.mk
+    $(LOCAL_DIR)/omni_X655C.mk
 
 COMMON_LUNCH_CHOICES := \
-twrp_X655C-user \
-twrp_X655C-userdebug \
-twrp_X655C-eng 
+omni_X655C-user \
+omni_X655C-userdebug \
+omni_X655C-eng 
