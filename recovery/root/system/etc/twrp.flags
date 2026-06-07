@@ -8,15 +8,21 @@
 /product_image  emmc    product                            flags=display="Product Image";backup=1;flashimg=1;logical
 /super          emmc    /dev/block/by-name/super           flags=display="Super Partition";backup=1;flashimg=1
 
-# MediaTek NVRAM / IMEI Backup Options
+# MediaTek 
 /nvram          emmc    /dev/block/by-name/nvram          flags=display="NVRAM";backup=1
 /nvdata         ext4    /dev/block/by-name/nvdata         flags=display="NVData";backup=1;subpartitionof=/nvram
 /nvcfg          ext4    /dev/block/by-name/nvcfg          flags=display="NVCfg";backup=1;subpartitionof=/nvram
-
-# Firmware, Security, and Core Tables
 /logo           emmc    /dev/block/by-name/logo           flags=display="Logo";backup=1;flashimg=1
 /dtbo           emmc    /dev/block/by-name/dtbo           flags=display="DTBO";backup=1;flashimg=1
 /vbmeta         emmc    /dev/block/by-name/vbmeta         flags=display="VBMeta";backup=1;flashimg=1
+/metadata       ext4    /dev/block/by-name/metadata        flags=display="Metadata";wrappedkey
+/persist        ext4    /dev/block/by-name/persist         flags=display="Persist";backup=1
+/protect_f      ext4    /dev/block/by-name/protect1        flags=display="Protect_F";backup=1
+/protect_s      ext4    /dev/block/by-name/protect2        flags=display="Protect_S";backup=1
+/tee1           emmc    /dev/block/by-name/tee1            flags=display="TEE1";backup=1
+/tee2           emmc    /dev/block/by-name/tee2            flags=display="TEE2";backup=1
+/proinfo        emmc    /dev/block/by-name/proinfo         flags=display="Proinfo";backup=1
+
 
 # External Removable Storage
 /external_sd    auto    /dev/block/mmcblk1p1  /dev/block/mmcblk1  flags=display="Micro SD Card";storage;wipeingui;removable
