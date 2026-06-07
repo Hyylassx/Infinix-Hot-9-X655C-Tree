@@ -7,9 +7,10 @@ product                                              /product           ext4    
 /dev/block/by-name/recovery                          /recovery          emmc        defaults                                            defaults
 /dev/block/by-name/cache                             /cache             ext4        noatime,nosuid,nodev,noauto_da_alloc,discard        wait,check,formattable
 /dev/block/by-name/super                             /super             emmc        defaults                                            defaults
+/dev/block/by-name/metadata                          /metadata          ext4        noatime,nosuid,nodev,discard                        wait,formattable
 
-/dev/block/by-name/metadata                          /metadata          ext4        noatime,nosuid,nodev,discard                        wait,formattable,first_stage_mount
-/dev/block/by-name/userdata                          /data              f2fs        noatime,nosuid,nodev,discard,usrquota,grpquota      wait,check,formattable,latemount,fileencryption=aes-256-xts:aes-256-cts:v2,keydirectory=/metadata/vold/metadata_encryption
+# FIXED: Removed latemount and forced keydirectory paths
+/dev/block/by-name/userdata                          /data              f2fs        noatime,nosuid,nodev,discard,usrquota,grpquota      wait,check,formattable,fileencryption=aes-256-xts:aes-256-cts:v2
 
 /dev/block/by-name/persist                           /mnt/vendor/persist    ext4    noatime,nosuid,nodev                                wait,check,formattable
 /dev/block/by-name/frp                               /frp               emmc        defaults                                            defaults
