@@ -159,8 +159,6 @@ TARGET_RECOVERY_DEVICE_MODULES += \
     teei_capi_2_0 \
     android.hardware.keymaster@4.0-service.beanpod \
     android.hardware.gatekeeper@1.0-service \
-    vold \
-    vold_prepare_subdirs \
     servicemanager \
     hwservicemanager \
     vndservicemanager \
