@@ -102,19 +102,3 @@ service vold /system/bin/vold
     group root mount reserved_disk
     disabled
     seclabel u:r:vold:s0
-
-# ============================================================
-# DRM GRAPHICS SERVICES
-# ============================================================
-
-service allocator-2-0 /vendor/bin/hw/android.hardware.graphics.allocator@2.0-service
-    class main
-    user system
-    group graphics drmrpc
-    disabled
-
-service hwcomposer-2-1 /vendor/bin/hw/android.hardware.graphics.composer@2.1-service
-    class main
-    user system
-    group graphics drmrpc
-    disabled
