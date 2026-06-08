@@ -1,20 +1,29 @@
-# <src>                                              <mnt_point>        <type>      <mnt_flags and options>                             <fs_mgr_flags>
-system                                               /system            ext4        ro                                                  wait,logical,first_stage_mount
-vendor                                               /vendor            ext4        ro                                                  wait,logical,first_stage_mount
-product                                              /product           ext4        ro                                                  wait,logical,first_stage_mount
+# Dynamic Partitions
+system                                               /system            ext4    ro                                                  wait,logical,first_stage_mount
+vendor                                               /vendor            ext4    ro                                                  wait,logical,first_stage_mount
+product                                              /product           ext4    ro                                                  wait,logical,first_stage_mount
 
-/dev/block/by-name/boot                              /boot              emmc        defaults                                            defaults
-/dev/block/by-name/recovery                          /recovery          emmc        defaults                                            defaults
-/dev/block/by-name/cache                             /cache             ext4        noatime,nosuid,nodev,noauto_da_alloc,discard        wait,check,formattable
-/dev/block/by-name/super                             /super             emmc        defaults                                            defaults
-/dev/block/by-name/metadata                          /metadata          ext4        noatime,nosuid,nodev,discard                        wait,formattable
+# Core Partitions
+/dev/block/by-name/boot                              /boot              emmc    defaults                                            defaults
+/dev/block/by-name/recovery                          /recovery          emmc    defaults                                            defaults
+/dev/block/by-name/super                             /super             emmc    defaults                                            defaults
 
-# FIXED: Removed latemount and forced keydirectory paths
-/dev/block/by-name/userdata                          /data              f2fs        noatime,nosuid,nodev,discard,usrquota,grpquota      wait,check,formattable,fileencryption=aes-256-xts:aes-256-cts:v2
+# Cache
+/dev/block/by-name/cache                             /cache             ext4    noatime,nosuid,nodev,noauto_da_alloc,discard        wait,check,formattable
 
-/dev/block/by-name/persist                           /mnt/vendor/persist    ext4    noatime,nosuid,nodev                                wait,check,formattable
-/dev/block/by-name/frp                               /frp               emmc        defaults                                            defaults
-/dev/block/by-name/para                              /misc              emmc        defaults                                            defaults
+# IMPORTANT: Stock maps md_udc as metadata
+/dev/block/by-name/md_udc                            /metadata          ext4    noatime,nosuid,nodev,discard                        wait,formattable,first_stage_mount
 
-/dev/block/mmcblk1p1                                 /external_sd       auto        defaults                                            defaults
-/dev/block/sda1                                      /usb_otg           auto        defaults                                            defaults
+# Data
+/dev/block/by-name/userdata                          /data              f2fs    noatime,nosuid,nodev,discard,noflush_merge,reserve_root=134217,resgid=1065 wait,check,quota,reservedsize=128M,formattable,resize,checkpoint=fs,fileencryption=aes-256-xts
+
+# Persist
+/dev/block/by-name/persist                           /mnt/vendor/persist ext4    noatime,nosuid,nodev                                wait,check,formattable
+
+# Misc
+/dev/block/by-name/frp                               /frp               emmc    defaults                                            defaults
+/dev/block/by-name/para                              /misc              emmc    defaults                                            defaults
+
+# External Storage
+/dev/block/mmcblk1p1                                 /external_sd       auto    defaults                                            defaults
+/dev/block/sda1                                      /usb_otg           auto    defaults                                            defaults
