@@ -146,7 +146,6 @@ RECOVERY_SDCARD_ON_DATA := true
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
 TW_DONT_DECRYPT := true
-TW_CRYPTO_USE_SYSTEM_VOLD := true
 
 # Keep these
 TW_SKIP_METADATA_ENCRYPTION := true
@@ -155,6 +154,8 @@ BOARD_USES_METADATA_PARTITION := true
 TW_FORCE_KEY_DIRECTORY := "/data/unencrypted/key"
 
 TARGET_RECOVERY_DEVICE_MODULES += \
+    vold \
+    vold_prepare_subdirs \
     teei_daemon \
     teei_capi_2_0 \
     android.hardware.keymaster@4.0-service.beanpod \
