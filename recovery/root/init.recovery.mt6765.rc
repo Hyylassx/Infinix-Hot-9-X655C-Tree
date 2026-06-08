@@ -1,25 +1,37 @@
 import /init.recovery.microtrust.rc
 
 on init
+    # Pembuatan Direktori Inti & Pre-create Microtrust TEE virtual RPMB paths
+    mkdir /tmp 0777 root root
+    mkdir /data 0771 system system
+    mkdir /data/vendor 0771 system system
+    mkdir /data/vendor/thh 0755 system system
+    mkdir /data/vendor/thh/tee_00 0755 system system
+    restorecon /tmp
+
+    # CRITICAL FIX: Mount cgroups! Without this, ALL HAL services crash instantly
+    # with "failed to write pid to /dev/cpuset/foreground/tasks"
+    mkdir /dev/cpuset 0750 root system
+    mount cgroup none /dev/cpuset cpuset
+    mkdir /dev/cpuset/foreground 0750 root system
+    mkdir /dev/cpuset/background 0750 root system
+    mkdir /dev/cpuset/top-app 0750 root system
+    write /dev/cpuset/foreground/tasks 1
+    write /dev/cpuset/background/tasks 1
+
+    mkdir /dev/cg2_bpf 0750 root system
+    mount cgroup2 none /dev/cg2_bpf nodev noexec nosuid
+
     setprop sys.usb.configfs 1
     setprop sys.usb.ffs.aio_compat 1
     setprop sys.usb.controller musb-hdrc
     setprop ro.boot.usbcontroller musb-hdrc
-    
-    # Pembuatan Direktori Inti
-    mkdir /tmp 0777 root root
-    mkdir /data 0771 system system
-    restorecon /tmp
     
     # Ekspor Jalur Pustaka Dinamis
     export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/system/lib:/vendor/lib:/sbin
 
 on fs
     write /sys/class/udc/musb-hdrc/device/cmode 1
-    
-    # 1. Hubungkan dan Pasang Partisi Vendor di Awal Booting
-    wait /dev/block/by-name/vendor
-    mount ext4 /dev/block/by-name/vendor /vendor ro
 
     # 2. Jalankan Tiga Layanan IPC Binder Utama untuk Android 10
     start servicemanager
@@ -34,6 +46,9 @@ on post-fs
     symlink /dev/block/mmcblk0boot1 /dev/block/platform/bootdevice/by-name/preloader_b
 
 on boot
+    # CRITICAL FIX: Stop keystore2 crash loop (Not needed for Android 10 recovery)
+    stop keystore2
+
     # Perizinan Input Sentuh (Touchscreen Driver)
     chmod 0666 /dev/input/event0
     chmod 0666 /dev/input/event1
@@ -79,4 +94,27 @@ service logcat /system/bin/logcat -b all -v threadtime -f /tmp/logcat.txt
     disabled
     seclabel u:r:recovery:s0
 
-# REMOVED: vold service - we're using native TWRP crypto, not vold
+# CRITICAL FIX: FBE Decryption REQUIRES vold. 
+# The "start vold" command in microtrust.rc depends on this definition.
+service vold /system/bin/vold
+    class core
+    user root
+    group root mount reserved_disk
+    disabled
+    seclabel u:r:vold:s0
+
+# ============================================================
+# DRM GRAPHICS SERVICES
+# ============================================================
+
+service allocator-2-0 /vendor/bin/hw/android.hardware.graphics.allocator@2.0-service
+    class main
+    user system
+    group graphics drmrpc
+    disabled
+
+service hwcomposer-2-1 /vendor/bin/hw/android.hardware.graphics.composer@2.1-service
+    class main
+    user system
+    group graphics drmrpc
+    disabled
