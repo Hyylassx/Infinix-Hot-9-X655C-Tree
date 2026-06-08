@@ -144,7 +144,7 @@ RECOVERY_SDCARD_ON_DATA := true
 # Enable native TWRP crypto (will use /dev/keymaster symlink)
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
-
+TW_DONT_DECRYPT := true
 TW_CRYPTO_USE_SYSTEM_VOLD := true
 TW_CRYPTO_SYSTEM_VOLD_DEBUG := true
 
@@ -159,6 +159,11 @@ TARGET_RECOVERY_DEVICE_MODULES += \
     teei_capi_2_0 \
     android.hardware.keymaster@4.0-service.beanpod \
     android.hardware.gatekeeper@1.0-service \
+    vold \
+    vold_prepare_subdirs \
+    servicemanager \
+    hwservicemanager \
+    vndservicemanager \
     keymaster-attestation
 
 # Security Patches & Version Override (Aligned for Android 10 Property Space)
