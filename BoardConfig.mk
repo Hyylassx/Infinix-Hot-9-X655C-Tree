@@ -144,9 +144,8 @@ RECOVERY_SDCARD_ON_DATA := true
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
 
-# DO NOT USE VOLD - it's broken on this device!
-# TW_CRYPTO_USE_SYSTEM_VOLD := true      ← REMOVE
-# TW_CRYPTO_SYSTEM_VOLD_DEBUG := true    ← REMOVE
+TW_CRYPTO_USE_SYSTEM_VOLD := true
+TW_CRYPTO_SYSTEM_VOLD_DEBUG := true
 
 # Keep these
 TW_SKIP_METADATA_ENCRYPTION := true
@@ -154,10 +153,6 @@ TW_SELINUX_RELEASE_PERMISSIVE := true
 BOARD_USES_METADATA_PARTITION := true
 TW_FORCE_KEY_DIRECTORY := "/data/unencrypted/key"
 
-# Remove these - not needed with symlink approach
-# TW_USE_FSCRYPT_POLICY := 1             ← REMOVE
-
-# TEEI services only (NO vold!)
 TARGET_RECOVERY_DEVICE_MODULES += \
     teei_daemon \
     teei_capi_2_0 \
