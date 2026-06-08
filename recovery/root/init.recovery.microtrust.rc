@@ -21,7 +21,8 @@ service keymaster-attestation /vendor/bin/hw/vendor.mediatek.hardware.keymaster_
     group root
     seclabel u:r:recovery:s0
 
-service keymaster-4-0-beanpod /vendor/bin/hw/android.hardware.keymaster@4.0-service.beanpod
+# FIX: Nama service ditambahkan prefiks "vendor." agar sesuai dengan meta_init.rc bawaan
+service vendor.keymaster-4-0-beanpod /vendor/bin/hw/android.hardware.keymaster@4.0-service.beanpod
     interface android.hardware.keymaster@4.0::IKeymasterDevice default
     user root
     group root
@@ -75,7 +76,9 @@ on boot
     chown system system /sys/bus/platform/devices/utos/unload_ut_drv
     chown system system /sys/bus/platform/devices/utos/notify_ree_dci_handler
 
-on post-fs-data
+on init
+    mkdir /data 0771 system system
+    mkdir /data/vendor 0771 system system
     mkdir /data/vendor/thh 0755 system system
     mkdir /data/vendor/thh/tee_00 0755 system system
 
@@ -85,23 +88,25 @@ on post-fs-data
 on property:init.svc.hwservicemanager=running
     wait /dev/teei_client
     start teei_daemon
-    # REMOVED: start vold (not using vold crypto)
 
 on property:init.svc.teei_daemon=running
     setprop crypto.ready 1
-    start keymaster-4-0-beanpod
+    start vendor.keymaster-4-0-beanpod
     start gatekeeper-1-0
     start keymaster-attestation
 
-on property:init.svc.keymaster-4-0-beanpod=running
+# FIX: Menyesuaikan pemicu dengan nama baru "vendor.keymaster-4-0-beanpod"
+on property:init.svc.vendor.keymaster-4-0-beanpod=running
     start teei_capi_2_0
+    start vold
 
 # ============================================
 # Cleanup
 # ============================================
 on property:twrp.decrypt.done=true
     stop gatekeeper-1-0
-    stop keymaster-4-0-beanpod
+    stop vendor.keymaster-4-0-beanpod
     stop keymaster-attestation
     stop teei_capi_2_0
     stop teei_daemon
+    stop vold
