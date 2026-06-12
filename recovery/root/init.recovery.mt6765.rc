@@ -1,11 +1,11 @@
 import /init.recovery.microtrust.rc
 
 on init
-    # Pembuatan Direktori Inti & Temp
+    # Core & Temp Directory Creation
     mkdir /tmp 0777 root root
     restorecon /tmp
 
-    # CRITICAL FIX UNIFIED: Struktur Cgroups & Cpuset murni
+    # CRITICAL FIX UNIFIED: Pure Cgroups & Cpuset structure
     mkdir /dev/cpuset 0750 root system
     mount cgroup none /dev/cpuset cpuset
     mkdir /dev/cpuset/foreground 0750 root system
@@ -25,7 +25,7 @@ on init
     setprop sys.usb.controller musb-hdrc
     setprop ro.boot.usbcontroller musb-hdrc
     
-    # Ekspor Jalur Pustaka Dinamis (Wajib Menyertakan /sbin)
+    # Export Dynamic Library Path (Must Include /sbin)
     export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/system/lib:/vendor/lib:/sbin
 
 on fs
@@ -36,7 +36,7 @@ on fs
     start hwservicemanager
 
 on post-fs
-    # Tautan Simbolik Preloader (Khas Chipset MediaTek MT6765)
+    # Preloader Symbolic Link (Typical MediaTek MT6765 Chipset)
     symlink /dev/block/sda /dev/block/mmcblk0boot0
     symlink /dev/block/sdb /dev/block/mmcblk0boot1
     symlink /dev/block/mmcblk0boot0 /dev/block/platform/bootdevice/by-name/preloader_a
@@ -44,7 +44,7 @@ on post-fs
     chmod 0755 /sbin/foxstart.sh
 
 on boot
-    # Perizinan Input Sentuh (Touchscreen Driver)
+    # Touch Input Permissions (Touchscreen Driver)
     chmod 0666 /dev/input/event0
     chmod 0666 /dev/input/event1
     chmod 0666 /dev/input/event2
@@ -55,18 +55,18 @@ on boot
 on post-fs-data
     start logd
 
-# MATRIKS STRATEGI DAN RANTAI PEMICU DINAMIS
+# DYNAMIC TRIGGER CHAIN #
 
-# Jalankan vold utama begitu TEE Microtrust active
+# Run the vold once TEE Microtrust is active
 on property:init.svc.teei_daemon=running
     start vold
 
-# SKENARIO A: JALUR ANDROID 10 (ROM Bawaan XOS - SDK 29)
+# SCENARIO A: ANDROID 10 Path (XOS Stock ROM - SDK 29)
 on property:init.svc.vendor.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=29
     start keystore
     start gatekeeperd
 
-# SKENARIO B: JALUR ANDROID 11 (SDK 30)
+# SCENARIO B: ANDROID 11 Path (SDK 30)
 on property:init.svc.vendor.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=30
     start wait_for_keymaster
 
@@ -74,7 +74,7 @@ on property:init.svc.wait_for_keymaster=stopped && property:ro.build.version.sdk
     start keystore
     start gatekeeperd
 
-# SKENARIO C: JALUR ANDROID 12 S/D 14 (Custom ROM - SDK 31 ke atas)
+# SCENARIO C: ANDROID 12 To 14 Path (Custom ROM - SDK 31 And Above)
 on property:init.svc.vendor.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=31
     start vndservicemanager
     start wait_for_keymaster
@@ -91,7 +91,7 @@ on property:init.svc.vendor.keymaster-4-0-beanpod=running && property:ro.build.v
     start vndservicemanager
     start wait_for_keymaster
 
-# Eksekusi Keystore2 setelah satpam keymaster selesai (Khusus A12 ke atas)
+# Execute Keystore2 after the keymaster security guard is finished (Only A12 and above)
 on property:init.svc.wait_for_keymaster=stopped && property:ro.build.version.sdk=31
     start keystore2
     start gatekeeperd
@@ -165,7 +165,7 @@ service gatekeeperd /system/bin/gatekeeperd /data/misc/gatekeeper
     disabled
     seclabel u:r:recovery:s0
 
-# 🔑 LAYANAN WARISAN: Keystore Tradisional Android 10 & 11 (FIXED GROUP GID)
+# 🔑 SERVICES: Android 10 & 11 Traditional Keystore (FIXED GROUP GID)
 service keystore /system/bin/keystore /data/misc/keystore
     class main
     user keystore
@@ -174,7 +174,7 @@ service keystore /system/bin/keystore /data/misc/keystore
     disabled
     seclabel u:r:recovery:s0
 
-# 🔑 LAYANAN MODEREN: Keystore2 Rust Android 12 ke atas
+# 🔑 MODEREN SERVICE: Keystore2 Rust Android 12 and above
 service keystore2 /system/bin/keystore2 /data/misc/keystore
     class main
     user 1000
