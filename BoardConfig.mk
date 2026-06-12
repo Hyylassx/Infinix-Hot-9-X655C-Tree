@@ -145,7 +145,7 @@ RECOVERY_SDCARD_ON_DATA := true
 # Enable native TWRP crypto (will use /dev/keymaster symlink)
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
-TW_DONT_DECRYPT := true
+TW_CRYPTO_USE_SYSTEM_VOLD := true
 
 # Keep these
 TW_SKIP_METADATA_ENCRYPTION := true
