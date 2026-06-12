@@ -20,8 +20,32 @@ service teei_daemon /vendor/bin/teei_daemon \
     -r 7b66512021214487ba710a51d7ea78fe \
     -r 09010000000000000000000000000000
     class core
-    user 1000
-    group 1000 drmrpc
+    user root
+    group root system drmrpc
+    disabled
+    seclabel u:r:recovery:s0
+
+# ADDED: Keymaster HAL Service Definition
+service keymaster-4-0-beanpod /vendor/bin/hw/android.hardware.keymaster@4.0-service.beanpod
+    class hal
+    user root
+    group root system drmrpc
+    disabled
+    seclabel u:r:recovery:s0
+
+# ADDED: CAPI HAL Service Definition
+service capi-2-0 /vendor/bin/hw/vendor.microtrust.hardware.capi@2.0-service
+    class hal
+    user root
+    group root system drmrpc
+    disabled
+    seclabel u:r:recovery:s0
+
+# ADDED: Gatekeeper HAL Service Definition
+service gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
+    class hal
+    user root
+    group root system drmrpc
     disabled
     seclabel u:r:recovery:s0
 
@@ -60,7 +84,7 @@ on post-fs
     chown 1000 1000 /vendor/persist/rpmb
 
 on post-fs-data
-    # FORCE TRIGGER CREATE RECOVERY FOLDER SECURITY (Bypass Missing Folder Crash)
+    # FORCE TRIGGER CREATE RECOVERY FOLDER SECURITY
     mkdir /data/vendor/thh 0755 system system
     mkdir /data/vendor/thh/system 0755 system system
     mkdir /data/vendor/thh/tee_00 0755 system system
