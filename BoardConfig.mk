@@ -144,24 +144,12 @@ RECOVERY_SDCARD_ON_DATA := true
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
 
-
 # Enforce the legacy, non-metadata path that your system relies on
 TW_SKIP_METADATA_ENCRYPTION := true
 TW_FORCE_KEY_DIRECTORY := "/data/unencrypted/key"
 
 # Allow background decryption binaries to talk without SELinux blocks
 TW_SELINUX_RELEASE_PERMISSIVE := true
-
-TARGET_RECOVERY_DEVICE_MODULES += \
-    servicemanager \
-    hwservicemanager \
-    vndservicemanager \
-    vold \
-    vold_prepare_subdirs \
-    keystore \
-    keystore2 \
-    gatekeeperd \
-    wait_for_keymaster
 
 # Security Patches & Version Override (Aligned for Android 10 Property Space)
 PLATFORM_SECURITY_PATCH := 2020-03-05
