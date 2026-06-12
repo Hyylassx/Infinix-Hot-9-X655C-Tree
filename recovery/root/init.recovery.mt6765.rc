@@ -71,8 +71,9 @@ on post-fs-data
 
 # DYNAMIC TRIGGER CHAIN - FIXED ORDER #
 
-# Start Keymaster HALs once TEE Daemon is running
+# Start Keybox Provisioning and HALs once TEE Daemon is running
 on property:init.svc.teei_daemon=running
+    start beanpod_check_keybox_service
     start vendor.keymaster-4-0-beanpod
     start teei_capi_2_0
     start vendor.gatekeeper-1-0
