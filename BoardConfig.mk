@@ -140,19 +140,15 @@ TW_EXTRA_LANGUAGES := false
 TWRP_EVENT_LOGGING := true
 RECOVERY_SDCARD_ON_DATA := true
 
-# TWRP DECRYPTION - Native Crypto with TEEI Symlink
-
-# Core Decryption Engine
+# Enable native TWRP crypto and pipe decryption requests to the system vold
 TW_INCLUDE_CRYPTO := true
+TW_CRYPTO_USE_SYSTEM_VOLD := true
 
-# BYPASS System Vold & Metadata Parsing
-TW_CRYPTO_USE_SYSTEM_VOLD := false
+# Enforce the legacy, non-metadata path that your system relies on
 TW_SKIP_METADATA_ENCRYPTION := true
-
-# Hard Force Legacy MediaTek Key Folder
 TW_FORCE_KEY_DIRECTORY := "/data/unencrypted/key"
 
-# Security & Debugging
+# Allow background decryption binaries to talk without SELinux blocks
 TW_SELINUX_RELEASE_PERMISSIVE := true
 
 TARGET_RECOVERY_DEVICE_MODULES += \
