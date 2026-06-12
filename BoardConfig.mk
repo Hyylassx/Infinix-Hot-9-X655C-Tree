@@ -138,9 +138,7 @@ TW_EXTRA_LANGUAGES := false
 TWRP_EVENT_LOGGING := true
 RECOVERY_SDCARD_ON_DATA := true
 
-# ============================================================
 # TWRP DECRYPTION - Native Crypto with TEEI Symlink
-# ============================================================
 
 # Enable native TWRP crypto (will use /dev/keymaster symlink)
 TW_INCLUDE_CRYPTO := true
@@ -154,16 +152,15 @@ BOARD_USES_METADATA_PARTITION := true
 TW_FORCE_KEY_DIRECTORY := "/data/unencrypted/key"
 
 TARGET_RECOVERY_DEVICE_MODULES += \
-    vold \
-    vold_prepare_subdirs \
-    teei_daemon \
-    teei_capi_2_0 \
-    android.hardware.keymaster@4.0-service.beanpod \
-    android.hardware.gatekeeper@1.0-service \
     servicemanager \
     hwservicemanager \
     vndservicemanager \
-    keymaster-attestation
+    vold \
+    vold_prepare_subdirs \
+    keystore \
+    keystore2 \
+    gatekeeperd \
+    wait_for_keymaster
 
 # Security Patches & Version Override (Aligned for Android 10 Property Space)
 PLATFORM_SECURITY_PATCH := 2020-03-05
