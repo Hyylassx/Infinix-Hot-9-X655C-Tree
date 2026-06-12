@@ -1,112 +1,85 @@
-# ============================================================
-# MICROTRUST BEANPOD CRYPTO SERVICES (TWRP)
-# ============================================================
+# RECOVERY OPTIMIZED MICROTRUST BEANPOD TEE CONFIGURATION
 
-service teei_daemon /vendor/bin/teei_daemon -r 020b0000000000000000000000000000 -r 020f0000000000000000000000000000 -r 06090000000000000000000000000000 -r 05120000000000000000000000000000 -r 40188311faf343488db888ad39496f9a -r 07060000000000000000000000007169 -r 9073f03a9618383bb1856eb3f990babd -r 08050000000000000000000000003419 -r 5020170115e016302017012521300000 -r 0f5eed3c3b5a47afacca69a84bf0efad -r 07407000000000000000000000000000 -r 05160000000000000000000000000000 -r 91dba524a6e24909acc48abd7163121a -r 08030000000000000000000000000000 -r 85f630e0f0964c5fa2cc268ce04e3da3 -r 98fb95bcb4bf42d26473eae48690d7ea -r 7b66512021214487ba710a51d7ea78fe -r 09010000000000000000000000000000
+service teei_daemon /vendor/bin/teei_daemon \
+    -r 020b0000000000000000000000000000 \
+    -r 020f0000000000000000000000000000 \
+    -r 06090000000000000000000000000000 \
+    -r 05120000000000000000000000000000 \
+    -r 40188311faf343488db888ad39496f9a \
+    -r 07060000000000000000000000007169 \
+    -r 9073f03a9618383bb1856eb3f990babd \
+    -r 08050000000000000000000000003419 \
+    -r 5020170115e016302017012521300000 \
+    -r 0f5eed3c3b5a47afacca69a84bf0efad \
+    -r 07407000000000000000000000000000 \
+    -r 05160000000000000000000000000000 \
+    -r 91dba524a6e24909acc48abd7163121a \
+    -r 08030000000000000000000000000000 \
+    -r 85f630e0f0964c5fa2cc268ce04e3da3 \
+    -r 98fb95bcb4bf42d26473eae48690d7ea \
+    -r 7b66512021214487ba710a51d7ea78fe \
+    -r 09010000000000000000000000000000
     class core
-    user root
-    group root
+    user 1000
+    group 1000 drmrpc
+    disabled
     seclabel u:r:recovery:s0
 
-service teei_capi_2_0 /vendor/bin/hw/vendor.microtrust.hardware.capi@2.0-service
-    class core
-    user root
-    group root
-    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
-    seclabel u:r:recovery:s0
-
-service keymaster-attestation /vendor/bin/hw/vendor.mediatek.hardware.keymaster_attestation@1.1-service
-    class core
-    user root
-    group root
-    seclabel u:r:recovery:s0
-
-# FIX: Nama service ditambahkan prefiks "vendor." agar sesuai dengan meta_init.rc bawaan
-service vendor.keymaster-4-0-beanpod /vendor/bin/hw/android.hardware.keymaster@4.0-service.beanpod
-    interface android.hardware.keymaster@4.0::IKeymasterDevice default
-    user root
-    group root
-    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
-    seclabel u:r:recovery:s0
-
-service gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
-    interface android.hardware.gatekeeper@1.0::IGatekeeper default
-    user root
-    group root
-    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
-    seclabel u:r:recovery:s0
-
-# ============================================
-# TEE Device Nodes + KEYMASTER SYMLINK
-# ============================================
 on fs
-    # KEYMASTER SYMLINK - Maps TEEI keymaster to standard path
-    symlink /dev/ut_keymaster /dev/keymaster
-    symlink /dev/ut_keymaster /dev/keymaster0
-    chmod 0660 /dev/keymaster
-    chown system drmrpc /dev/keymaster
-    
-    # TEEI devices
     chmod 0660 /dev/teei_client
-    chown system system /dev/teei_client
+    chown 1000 1000 /dev/teei_client
     chmod 0660 /dev/teei_config
-    chown system system /dev/teei_config
+    chown 1000 1000 /dev/teei_config
     chmod 0666 /dev/tee0
-    chown system drmrpc /dev/tee0
+    chown 1000 drmrpc /dev/tee0
     chmod 0660 /dev/tz_vfs
-    chown system system /dev/tz_vfs
+    chown 1000 1000 /dev/tz_vfs
     chmod 0660 /dev/teei_fp
-    chown system /dev/teei_fp
-    chown system drmrpc /dev/ut_keymaster
+    chown 1000 1000 /dev/teei_fp
+    chown 1000 drmrpc /dev/ut_keymaster
     chmod 0660 /dev/ut_keymaster
     chmod 0660 /dev/rpmb0
-    chown system system /dev/rpmb0
+    chown 1000 1000 /dev/rpmb0
     chmod 0660 /dev/emmcrpmb0
-    chown system system /dev/emmcrpmb0
-    chown system system /dev/utr_tui
+    chown 1000 1000 /dev/emmcrpmb0
+    chown 1000 1000 /dev/utr_tui
     chmod 0660 /dev/utr_tui
-
-# ============================================
-# TEE Directory Tree
-# ============================================
-on boot
-    chown system system /sys/bus/platform/devices/utos/dcih_notify_test
-    chown system system /sys/bus/platform/devices/utos/dcih_wait_notify_test
-    chown system system /sys/bus/platform/devices/utos/load_ut_drv
-    chown system system /sys/bus/platform/devices/utos/unload_ut_drv
-    chown system system /sys/bus/platform/devices/utos/notify_ree_dci_handler
-
-on init
-    mkdir /data 0771 system system
-    mkdir /data/vendor 0771 system system
-    mkdir /data/vendor/thh 0755 system system
-    mkdir /data/vendor/thh/tee_00 0755 system system
-
-# ============================================
-# Crypto Stack Startup Chain
-# ============================================
-on property:init.svc.hwservicemanager=running
-    wait /dev/teei_client
+    
     start teei_daemon
 
-on property:init.svc.teei_daemon=running
-    setprop crypto.ready 1
-    start vendor.keymaster-4-0-beanpod
-    start gatekeeper-1-0
-    start keymaster-attestation
+on post-fs
+    # Setup RPMB secure storage paths
+    chown 1000 1000 /mnt/vendor/persist
+    chmod 0771 /mnt/vendor/persist
+    mkdir /mnt/vendor/persist/rpmb 0771 system system
+    chown 1000 1000 /mnt/vendor/persist/rpmb
+    
+    mkdir /persist/rpmb 0771 system system
+    mkdir /vendor/persist/rpmb 0771 system system
+    chown 1000 1000 /persist/rpmb
+    chown 1000 1000 /vendor/persist/rpmb
 
-# FIX: Menyesuaikan pemicu dengan nama baru "vendor.keymaster-4-0-beanpod"
-on property:init.svc.vendor.keymaster-4-0-beanpod=running
-    start teei_capi_2_0
-    start vold
-
-# ============================================
-# Cleanup
-# ============================================
-on property:twrp.decrypt.done=true
-    stop gatekeeper-1-0
-    stop vendor.keymaster-4-0-beanpod
-    stop keymaster-attestation
-    stop teei_capi_2_0
-    stop teei_daemon
-    stop vold
+on post-fs-data
+    # FORCE TRIGGER CREATING RECOVERY FOLDER SECURITY (Bypass Missing Folder Crash)
+    mkdir /data/vendor/thh 0755 system system
+    mkdir /data/vendor/thh/system 0755 system system
+    mkdir /data/vendor/thh/tee_00 0755 system system
+    mkdir /data/vendor/thh/tee_01 0755 system system
+    mkdir /data/vendor/thh/tee_02 0755 system system
+    mkdir /data/vendor/thh/tee_03 0755 system system
+    mkdir /data/vendor/thh/tee_04 0755 system system
+    mkdir /data/vendor/thh/tee_05 0755 system system
+    mkdir /data/vendor/thh/tee_06 0755 system system
+    mkdir /data/vendor/thh/tee_07 0755 system system
+    mkdir /data/vendor/thh/tee 0755 system system
+    mkdir /data/vendor/thh/tee/tas 0755 system system
+    mkdir /data/vendor/thh/tee_08 0755 system system
+    mkdir /data/vendor/thh/tee_09 0755 system system
+    mkdir /data/vendor/thh/tee_0A 0755 system system
+    mkdir /data/vendor/thh/tee_0B 0755 system system
+    mkdir /data/vendor/thh/tee_0C 0755 system system
+    mkdir /data/vendor/thh/tee_0D 0755 system system
+    mkdir /data/vendor/thh/tee_0E 0755 system system
+    mkdir /data/vendor/thh/tee_0F 0755 system system
+    mkdir /data/vendor/thh/ta 0755 system system
+    mkdir /data/vendor/key_provisioning 0771 system system
