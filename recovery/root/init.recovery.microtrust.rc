@@ -20,71 +20,70 @@ service teei_daemon /vendor/bin/teei_daemon \
     -r 7b66512021214487ba710a51d7ea78fe \
     -r 09010000000000000000000000000000
     class core
-    user root
-    group root system drmrpc
+    user system
+    group system drmrpc
     disabled
     seclabel u:r:recovery:s0
 
-# ADDED: Keymaster HAL Service Definition
-service keymaster-4-0-beanpod /vendor/bin/hw/android.hardware.keymaster@4.0-service.beanpod
-    class hal
-    user root
-    group root system drmrpc
+# EXACT MATCH FROM STOCK ROM
+service vendor.keymaster-4-0-beanpod /vendor/bin/hw/android.hardware.keymaster@4.0-service.beanpod
+    class early_hal
+    user system
+    group system drmrpc
     disabled
     seclabel u:r:recovery:s0
 
-# ADDED: CAPI HAL Service Definition
-service capi-2-0 /vendor/bin/hw/vendor.microtrust.hardware.capi@2.0-service
+# EXACT MATCH FROM STOCK ROM
+service teei_capi_2_0 /vendor/bin/hw/vendor.microtrust.hardware.capi@2.0-service
     class hal
-    user root
-    group root system drmrpc
+    user system
+    group system
     disabled
+    oneshot
     seclabel u:r:recovery:s0
 
-# ADDED: Gatekeeper HAL Service Definition
-service gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
+# EXACT MATCH FROM STOCK ROM
+service vendor.gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
     class hal
-    user root
-    group root system drmrpc
+    user system
+    group system
     disabled
     seclabel u:r:recovery:s0
 
 on fs
     chmod 0660 /dev/teei_client
-    chown 1000 1000 /dev/teei_client
+    chown system system /dev/teei_client
     chmod 0660 /dev/teei_config
-    chown 1000 1000 /dev/teei_config
+    chown system system /dev/teei_config
     chmod 0666 /dev/tee0
-    chown 1000 drmrpc /dev/tee0
+    chown system drmrpc /dev/tee0
     chmod 0660 /dev/tz_vfs
-    chown 1000 1000 /dev/tz_vfs
+    chown system system /dev/tz_vfs
     chmod 0660 /dev/teei_fp
-    chown 1000 1000 /dev/teei_fp
-    chown 1000 drmrpc /dev/ut_keymaster
+    chown system system /dev/teei_fp
+    chown system drmrpc /dev/ut_keymaster
     chmod 0660 /dev/ut_keymaster
     chmod 0660 /dev/rpmb0
-    chown 1000 1000 /dev/rpmb0
+    chown system system /dev/rpmb0
     chmod 0660 /dev/emmcrpmb0
-    chown 1000 1000 /dev/emmcrpmb0
-    chown 1000 1000 /dev/utr_tui
+    chown system system /dev/emmcrpmb0
+    chown system system /dev/utr_tui
     chmod 0660 /dev/utr_tui
     
     start teei_daemon
 
 on post-fs
-    # Setup RPMB secure storage paths
-    chown 1000 1000 /mnt/vendor/persist
+    chown system system /mnt/vendor/persist
     chmod 0771 /mnt/vendor/persist
     mkdir /mnt/vendor/persist/rpmb 0771 system system
-    chown 1000 1000 /mnt/vendor/persist/rpmb
+    chown system system /mnt/vendor/persist/rpmb
     
     mkdir /persist/rpmb 0771 system system
     mkdir /vendor/persist/rpmb 0771 system system
-    chown 1000 1000 /persist/rpmb
-    chown 1000 1000 /vendor/persist/rpmb
+    chown system system /persist/rpmb
+    chown system system /vendor/persist/rpmb
 
 on post-fs-data
-    # FORCE TRIGGER CREATE RECOVERY FOLDER SECURITY
     mkdir /data/vendor/thh 0755 system system
     mkdir /data/vendor/thh/system 0755 system system
     mkdir /data/vendor/thh/tee_00 0755 system system
