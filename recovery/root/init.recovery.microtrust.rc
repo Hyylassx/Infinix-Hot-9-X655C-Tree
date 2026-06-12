@@ -60,7 +60,7 @@ on post-fs
     chown 1000 1000 /vendor/persist/rpmb
 
 on post-fs-data
-    # FORCE TRIGGER MEMBUAT RECOVERY FOLDER SECURITY (Bypass Missing Folder Crash)
+    # FORCE TRIGGER CREATE RECOVERY FOLDER SECURITY (Bypass Missing Folder Crash)
     mkdir /data/vendor/thh 0755 system system
     mkdir /data/vendor/thh/system 0755 system system
     mkdir /data/vendor/thh/tee_00 0755 system system
