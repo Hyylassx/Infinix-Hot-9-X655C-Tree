@@ -135,8 +135,9 @@ TW_USE_TOOLBOX := true
 TW_NO_SCREEN_TIMEOUT := true
 TW_INCLUDE_FASTBOOTD := true
 TW_SUPPORT_EMBEDDED_VINTF := true
-TWRP_INCLUDE_LOGCAT := true
+TW_SELINUX_RELEASE_PERMISSIVE := true
 TW_EXTRA_LANGUAGES := false
+TWRP_INCLUDE_LOGCAT := true
 TWRP_EVENT_LOGGING := true
 RECOVERY_SDCARD_ON_DATA := true
 
@@ -147,9 +148,6 @@ TW_INCLUDE_CRYPTO_FBE := true
 # Enforce the legacy, non-metadata path that your system relies on
 TW_SKIP_METADATA_ENCRYPTION := true
 TW_FORCE_KEY_DIRECTORY := "/data/unencrypted/key"
-
-# Allow background decryption binaries to talk without SELinux blocks
-TW_SELINUX_RELEASE_PERMISSIVE := true
 
 # Security Patches & Version Override (Aligned for Android 10 Property Space)
 PLATFORM_SECURITY_PATCH := 2020-03-05
