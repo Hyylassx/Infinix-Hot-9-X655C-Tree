@@ -36,9 +36,15 @@ PRODUCT_GMS_CLIENTID_BASE := android-infinix
 
 # 1. Executables
 PRODUCT_PACKAGES += \
-    logd \
-    liblog \
-    logcat
+    servicemanager \
+    hwservicemanager \
+    vndservicemanager \
+    vold \
+    vold_prepare_subdirs \
+    keystore \
+    keystore2 \
+    gatekeeperd \
+    wait_for_keymaster
 
 # 2. Config & Prebuilt Init Scripts (Koreksi Jalur Kanan: recovery/root/ dibuang)
 PRODUCT_COPY_FILES += \
