@@ -22,7 +22,7 @@ on init
     setprop sys.usb.controller musb-hdrc
     setprop ro.boot.usbcontroller musb-hdrc
     
-    # PREVENT FASTBOOT REBOOT: If vold crashes, stay in TWRP!
+    # CRITICAL: Prevent fastboot reboot if vold crashes!
     setprop sys.init_fatal_vold.reboot 0
     
     export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/system/lib:/vendor/lib:/sbin
@@ -50,16 +50,35 @@ on boot
 on post-fs-data
     start logd
 
+    # CRITICAL FBE FIX: Create essential directories for vold & keystore
+    # Extracted from stock vendor_init_as_system.rc
+    mkdir /data/misc 01771 system misc
+    mkdir /data/misc/keystore 0700 keystore keystore
+    mkdir /data/misc/vold 0700 root root
+    mkdir /data/misc/gatekeeper 0700 system system
+    mkdir /data/misc/systemkeys 0700 system system
+    mkdir /data/system 0775 system system
+    mkdir /data/system_ce 0770 system system
+    mkdir /data/misc_ce 01771 system misc
+    mkdir /data/vendor 0771 root root
+    mkdir /data/vendor_ce 0771 root root
+    mkdir /data/media 0770 media_rw media_rw
+    mkdir /data/local/tmp 0771 shell shell
+    mkdir /data/data 0771 system system
+
+    # CRITICAL FBE FIX: vold will NOT attempt decryption until this is set to 1
+    setprop vold.post_fs_data_done 1
+
 # DYNAMIC TRIGGER CHAIN - FIXED ORDER #
 
 # Start Keymaster HALs once TEE Daemon is running
 on property:init.svc.teei_daemon=running
-    start keymaster-4-0-beanpod
-    start capi-2-0
-    start gatekeeper-1-0
+    start vendor.keymaster-4-0-beanpod
+    start teei_capi_2_0
+    start vendor.gatekeeper-1-0
 
 # SCENARIO A: ANDROID 10 Path (XOS Stock ROM - SDK 29)
-on property:init.svc.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=29
+on property:init.svc.vendor.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=29
     start keystore
     start gatekeeperd
 
@@ -68,7 +87,7 @@ on property:init.svc.keystore=running && property:ro.build.version.sdk=29
     start vold
 
 # SCENARIO B: ANDROID 11 Path (SDK 30)
-on property:init.svc.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=30
+on property:init.svc.vendor.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=30
     start wait_for_keymaster
 
 on property:init.svc.wait_for_keymaster=stopped && property:ro.build.version.sdk=30
@@ -76,20 +95,20 @@ on property:init.svc.wait_for_keymaster=stopped && property:ro.build.version.sdk
     start gatekeeperd
     start vold
 
-# SCENARIO C: ANDROID 12+ Path (SDK 31+)
-on property:init.svc.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=31
+# SCENARIO C: ANDROID 12 To 14 Path (Custom ROM - SDK 31 And Above)
+on property:init.svc.vendor.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=31
     start vndservicemanager
     start wait_for_keymaster
 
-on property:init.svc.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=32
+on property:init.svc.vendor.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=32
     start vndservicemanager
     start wait_for_keymaster
 
-on property:init.svc.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=33
+on property:init.svc.vendor.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=33
     start vndservicemanager
     start wait_for_keymaster
 
-on property:init.svc.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=34
+on property:init.svc.vendor.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=34
     start vndservicemanager
     start wait_for_keymaster
 
@@ -123,9 +142,9 @@ service servicemanager /system/bin/servicemanager
     seclabel u:r:recovery:s0
 
 service hwservicemanager /system/bin/hwservicemanager
-    class siginallog
-    user 1000
-    group 1000 readproc
+    class core
+    user system
+    group system readproc
     critical
     onrestart setprop hwservicemanager.ready false
     writepid /dev/cpuset/system-background/tasks
@@ -135,8 +154,8 @@ service hwservicemanager /system/bin/hwservicemanager
 
 service vndservicemanager /system/bin/vndservicemanager /dev/vndbinder
     class core
-    user 1000
-    group 1000 readproc
+    user system
+    group system readproc
     writepid /dev/cpuset/system-background/tasks
     shutdown critical
     disabled
@@ -163,33 +182,34 @@ service vold /system/bin/vold \
     seclabel u:r:vold:s0
 
 service gatekeeperd /system/bin/gatekeeperd /data/misc/gatekeeper
-    class main
-    user 1000
-    group 1000 drmrpc
-    writepid /dev/cpuset/foreground/tasks
+    class late_start
+    user system
+    writepid /dev/cpuset/system-background/tasks
     disabled
     seclabel u:r:recovery:s0
 
+# CRITICAL FIX: Keystore MUST have drmrpc group to talk to Keymaster TEE
 service keystore /system/bin/keystore /data/misc/keystore
     class main
     user keystore
-    group keystore system
+    group keystore drmrpc readproc log
     writepid /dev/cpuset/foreground/tasks
     disabled
     seclabel u:r:recovery:s0
 
 service keystore2 /system/bin/keystore2 /data/misc/keystore
     class main
-    user 1000
-    group 1000 drmrpc readproc log
+    user keystore
+    group keystore drmrpc readproc log
     writepid /dev/cpuset/foreground/tasks
     disabled
     seclabel u:r:recovery:s0
 
+# EXACT MATCH FROM STOCK ROM
 service wait_for_keymaster /system/bin/wait_for_keymaster
     class main
-    user 1000
-    group 1000 system
+    user root
+    group root system
     priority -20
     ioprio rt 0
     disabled
