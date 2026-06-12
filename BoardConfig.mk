@@ -115,6 +115,7 @@ BUILD_BROKEN_PREBUILT_MODULE_DELIVERY := true
 
 # TWRP Graphics & Theme
 TW_INCLUDE_F2FS := true
+TW_INCLUDE_RESETPROP := true
 TW_CUSTOM_CONFIGFS := true
 TW_THEME := portrait_hdpi
 TW_SCREEN_BLANK_ON_BOOT := false
@@ -127,6 +128,7 @@ TW_EXCLUDE_DEFAULT_USB_INIT := true
 
 # TWRP Exclusion & Feature Flags
 TW_INPUT_BLACKLIST := "hct_battery"
+TW_NO_LEGACY_PROPS := true
 TW_EXCLUDE_TWRP_APP := true
 TW_DEFAULT_LANGUAGE := en
 TW_USE_TOOLBOX := true
