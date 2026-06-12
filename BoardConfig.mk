@@ -142,12 +142,14 @@ RECOVERY_SDCARD_ON_DATA := true
 
 # TWRP DECRYPTION - Native Crypto with TEEI Symlink
 
-# Enable native TWRP crypto (will use /dev/keymaster symlink)
+# Core Decryption Engine
 TW_INCLUDE_CRYPTO := true
-TW_CRYPTO_USE_SYSTEM_VOLD := true
 
-# Enforce legacy FBE paths over modern metadata structures
+# BYPASS System Vold & Metadata Parsing
+TW_CRYPTO_USE_SYSTEM_VOLD := false
 TW_SKIP_METADATA_ENCRYPTION := true
+
+# Hard Force Legacy MediaTek Key Folder
 TW_FORCE_KEY_DIRECTORY := "/data/unencrypted/key"
 
 # Security & Debugging
