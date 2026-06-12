@@ -144,14 +144,14 @@ RECOVERY_SDCARD_ON_DATA := true
 
 # Enable native TWRP crypto (will use /dev/keymaster symlink)
 TW_INCLUDE_CRYPTO := true
-TW_INCLUDE_CRYPTO_FBE := true
 TW_CRYPTO_USE_SYSTEM_VOLD := true
 
-# Keep these
+# Enforce legacy FBE paths over modern metadata structures
 TW_SKIP_METADATA_ENCRYPTION := true
-TW_SELINUX_RELEASE_PERMISSIVE := true
-BOARD_USES_METADATA_PARTITION := true
 TW_FORCE_KEY_DIRECTORY := "/data/unencrypted/key"
+
+# Security & Debugging
+TW_SELINUX_RELEASE_PERMISSIVE := true
 
 TARGET_RECOVERY_DEVICE_MODULES += \
     servicemanager \
