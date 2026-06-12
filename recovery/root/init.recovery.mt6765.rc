@@ -1,80 +1,138 @@
 import /init.recovery.microtrust.rc
 
 on init
-    # Pembuatan Direktori Inti & Pre-create Microtrust TEE virtual RPMB paths
+    # Creating Core Directory
     mkdir /tmp 0777 root root
-    mkdir /data 0771 system system
-    mkdir /data/vendor 0771 system system
-    mkdir /data/vendor/thh 0755 system system
-    mkdir /data/vendor/thh/tee_00 0755 system system
     restorecon /tmp
 
-    # CRITICAL FIX: Mount cgroups! Without this, ALL HAL services crash instantly
-    # with "failed to write pid to /dev/cpuset/foreground/tasks"
+    # CRITICAL FIX UNIFIED: Structure Pure Cgroups & Cpuset 
     mkdir /dev/cpuset 0750 root system
     mount cgroup none /dev/cpuset cpuset
     mkdir /dev/cpuset/foreground 0750 root system
     mkdir /dev/cpuset/background 0750 root system
+    mkdir /dev/cpuset/system-background 0750 root system
     mkdir /dev/cpuset/top-app 0750 root system
     write /dev/cpuset/foreground/tasks 1
     write /dev/cpuset/background/tasks 1
+    write /dev/cpuset/system-background/tasks 1
 
     mkdir /dev/cg2_bpf 0750 root system
     mount cgroup2 none /dev/cg2_bpf nodev noexec nosuid
 
+    # USB Configurationfs
     setprop sys.usb.configfs 1
     setprop sys.usb.ffs.aio_compat 1
     setprop sys.usb.controller musb-hdrc
     setprop ro.boot.usbcontroller musb-hdrc
     
-    # Ekspor Jalur Pustaka Dinamis
+    # Export Dynamic Libary 
     export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/system/lib:/vendor/lib:/sbin
 
 on fs
     write /sys/class/udc/musb-hdrc/device/cmode 1
 
-    # 2. Jalankan Tiga Layanan IPC Binder Utama untuk Android 10
+    # Jalankan binder dasar serentak
     start servicemanager
     start hwservicemanager
-    start vndservicemanager
 
 on post-fs
-    # Tautan Simbolik Preloader (Khas Chipset MediaTek)
+    # Symlink Preloader (Chipset MediaTek MT6765)
     symlink /dev/block/sda /dev/block/mmcblk0boot0
     symlink /dev/block/sdb /dev/block/mmcblk0boot1
     symlink /dev/block/mmcblk0boot0 /dev/block/platform/bootdevice/by-name/preloader_a
     symlink /dev/block/mmcblk0boot1 /dev/block/platform/bootdevice/by-name/preloader_b
+    chmod 0755 /sbin/foxstart.sh
 
 on boot
-    # CRITICAL FIX: Stop keystore2 crash loop (Not needed for Android 10 recovery)
-    stop keystore2
-
-    # Perizinan Input Sentuh (Touchscreen Driver)
+    # Touch Permission (Touchscreen Driver)
     chmod 0666 /dev/input/event0
     chmod 0666 /dev/input/event1
     chmod 0666 /dev/input/event2
     chmod 0666 /dev/input/event3
     chmod 0666 /dev/input/event4
     chmod 0666 /dev/input/event5
-    chown root root /dev/input/event0
-    chown root root /dev/input/event1
-    chown root root /dev/input/event2
-    chown root root /dev/input/event3
-    chown root root /dev/input/event4
-    chown root root /dev/input/event5
 
 on post-fs-data
-    # Nyalakan Logging Sistem Pemulihan
     start logd
 
-# ============================================================
-# DEFINISI CORE SERVICES ANDROID 10 & TWRP
-# ============================================================
+# FBE Services
+# Run vold After TEE Microtrust active
+on property:init.svc.teei_daemon=running
+    start vold
+
+# SCENARIO A: Android 10 Path (Default-OS-XOS - SDK 29)
+on property:init.svc.vendor.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=29
+    start keystore
+    start gatekeeperd
+
+# SCENARIO B: Android 11 Path (SDK 30)
+on property:init.svc.vendor.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=30
+    start wait_for_keymaster
+
+on property:init.svc.wait_for_keymaster=stopped && property:ro.build.version.sdk=30
+    start keystore
+    start gatekeeperd
+
+# SCENARIO C: Android 12 Path S/D 14 (Custom ROM - SDK 31 ke atas)
+on property:init.svc.vendor.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=31
+    start vndservicemanager
+    start wait_for_keymaster
+
+on property:init.svc.vendor.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=32
+    start vndservicemanager
+    start wait_for_keymaster
+
+on property:init.svc.vendor.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=33
+    start vndservicemanager
+    start wait_for_keymaster
+
+on property:init.svc.vendor.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=34
+    start vndservicemanager
+    start wait_for_keymaster
+
+# Exection Keystore2 After Keymaster Done (For A12 And Above)
+on property:init.svc.wait_for_keymaster=stopped && property:ro.build.version.sdk=31
+    start keystore2
+    start gatekeeperd
+
+on property:init.svc.wait_for_keymaster=stopped && property:ro.build.version.sdk=32
+    start keystore2
+    start gatekeeperd
+
+on property:init.svc.wait_for_keymaster=stopped && property:ro.build.version.sdk=33
+    start keystore2
+    start gatekeeperd
+
+on property:init.svc.wait_for_keymaster=stopped && property:ro.build.version.sdk=34
+    start keystore2
+    start gatekeeperd
+
+# RECOVERY OPTIMIZED CORE SERVICES DEFINITION #
 
 service servicemanager /system/bin/servicemanager
     class core
     user root
     group root readproc
+    disabled
+    seclabel u:r:recovery:s0
+
+service hwservicemanager /system/bin/hwservicemanager
+    class siginallog
+    user 1000
+    group 1000 readproc
+    critical
+    onrestart setprop hwservicemanager.ready false
+    writepid /dev/cpuset/system-background/tasks
+    shutdown critical
+    disabled
+    seclabel u:r:recovery:s0
+
+service vndservicemanager /system/bin/vndservicemanager /dev/vndbinder
+    class core
+    user 1000
+    group 1000 readproc
+    writepid /dev/cpuset/system-background/tasks
+    shutdown critical
     disabled
     seclabel u:r:recovery:s0
 
@@ -87,18 +145,49 @@ service logd /system/bin/logd
     writepid /dev/cpuset/system-background/tasks
     seclabel u:r:logd:s0
 
-service logcat /system/bin/logcat -b all -v threadtime -f /tmp/logcat.txt
-    class boot
-    user root
-    group root
+service vold /system/bin/vold \
+        --blkid_context=u:r:blkid:s0 --blkid_untrusted_context=u:r:blkid_untrusted:s0 \
+        --fsck_context=u:r:fsck:s0 --fsck_untrusted_context=u:r:fsck_untrusted:s0
+    class core
+    ioprio be 2
+    writepid /dev/cpuset/foreground/tasks
+    shutdown critical
+    group root reserved_disk
+    disabled
+    seclabel u:r:vold:s0
+
+service gatekeeperd /system/bin/gatekeeperd /data/misc/gatekeeper
+    class main
+    user 1000
+    group 1000 drmrpc
+    writepid /dev/cpuset/foreground/tasks
     disabled
     seclabel u:r:recovery:s0
 
-# CRITICAL FIX: FBE Decryption REQUIRES vold. 
-# The "start vold" command in microtrust.rc depends on this definition.
-service vold /system/bin/vold
-    class core
-    user root
-    group root mount reserved_disk
+# Keystore Android 10 & 11 (FIXED GROUP GID)
+service keystore /system/bin/keystore /data/misc/keystore
+    class main
+    user keystore
+    group keystore system
+    writepid /dev/cpuset/foreground/tasks
     disabled
-    seclabel u:r:vold:s0
+    seclabel u:r:recovery:s0
+
+# Keystore2 Rust Android 12 and above
+service keystore2 /system/bin/keystore2 /data/misc/keystore
+    class main
+    user 1000
+    group 1000 drmrpc readproc log
+    writepid /dev/cpuset/foreground/tasks
+    disabled
+    seclabel u:r:recovery:s0
+
+service wait_for_keymaster /system/bin/wait_for_keymaster
+    class main
+    user 1000
+    group 1000 system
+    priority -20
+    ioprio rt 0
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
