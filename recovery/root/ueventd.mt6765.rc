@@ -140,6 +140,6 @@
 /dev/input/event*       0666    root    root
 /dev/input/*            0666    root    root
 
-# Touch device (kalau ada /dev/touch node)
+# Touch device
 /dev/touch              0666    root    root
 /dev/hotknot            0666    root    root
