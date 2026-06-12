@@ -34,15 +34,3 @@ PRODUCT_ENFORCE_VINTF_MANIFEST := false
 
 # Base Client ID / Fingerprint
 PRODUCT_GMS_CLIENTID_BASE := android-infinix
-
-# 1. Executables
-PRODUCT_PACKAGES += \
-    servicemanager \
-    hwservicemanager \
-    vndservicemanager \
-    vold \
-    vold_prepare_subdirs \
-    keystore \
-    keystore2 \
-    gatekeeperd \
-    wait_for_keymaster
