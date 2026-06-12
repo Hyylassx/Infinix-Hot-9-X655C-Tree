@@ -1,21 +1,70 @@
-# Infinix X655C (MT6765) - TWRP Flags Custom Mapping
-# Supplementary flags for OrangeFox GUI features - Unified Adaptive (A10 - A14)
+# Infinix X655C (MT6765) - TWRP Flags
+# Supports: FBE Decryption, Dynamic Partitions, GSI Flashing, Resize
 
-# Core Partition Overrides (Adaptive Decryption Framework) (Dual-File-System Mapping)
-/metadata         ext4      /dev/block/by-name/md_udc        flags=backup=1;display="Metadata"
-/data             f2fs      /dev/block/by-name/userdata       flags=display="Data";backup=1;wipeingui;canbewiped
-/cache            ext4      /dev/block/by-name/cache          flags=display="Cache";backup=1;wipeingui
+# LOGICAL PARTITIONS (Mapped path for Dynamic Partition resizing & GSI flashing)
+/system          ext4    /dev/block/mapper/system                       flags=display="System";backup=1;logical;flashimg=1;wipeingui
+/vendor          ext4    /dev/block/mapper/vendor                       flags=display="Vendor";backup=1;logical;flashimg=1;wipeingui
+/product         ext4    /dev/block/mapper/product                      flags=display="Product";backup=1;logical;flashimg=1;wipeingui
 
-# Flashable Images Components (GUI Flashable Image Enabled)
-/boot             emmc      /dev/block/by-name/boot           flags=display="Boot";backup=1;flashimg=1
-/recovery         emmc      /dev/block/by-name/recovery       flags=display="Recovery";backup=1;flashimg=1
-/dtbo             emmc      /dev/block/by-name/dtbo           flags=display="DTBO";backup=1;flashimg=1
-/vbmeta           emmc      /dev/block/by-name/vbmeta         flags=display="VBMeta";backup=1;flashimg=1
-/vbmeta_system    emmc      /dev/block/by-name/vbmeta_system  flags=display="VBMeta System";backup=1;flashimg=1
-/vbmeta_vendor    emmc      /dev/block/by-name/vbmeta_vendor  flags=display="VBMeta Vendor";backup=1;flashimg=1
-/logo             emmc      /dev/block/by-name/logo           flags=display="Logo";backup=1;flashimg=1
-/bootloader       emmc      /dev/block/by-name/lk             flags=display="LK (Bootloader)";backup=1;flashimg=1
+# GSI Target & SUPER (Necessary for flashing .img raw images to logical slots)
+/system_image    emmc    /dev/block/by-name/system                      flags=display="System Image";flashimg=1;backup=0
+/vendor_image    emmc    /dev/block/by-name/vendor                      flags=display="Vendor Image";flashimg=1;backup=0
+/product_image   emmc    /dev/block/by-name/product                     flags=display="Product Image";flashimg=1;backup=0
+/super           emmc    /dev/block/by-name/super                       flags=display="Super Partition";backup=1;flashimg=1
 
-# External Removable Storage (Keep Default)
-/external_sd      auto      /dev/block/mmcblk1p1  /dev/block/mmcblk1  flags=display="Micro SD Card";storage;wipeingui;removable
-/usb_otg          auto      /dev/block/sda1       /dev/block/sda      flags=display="USB OTG";storage;wipeingui;removable
+# Core Storages
+/metadata        ext4    /dev/block/by-name/md_udc                      flags=backup=1;display="Metadata"
+/cache           ext4    /dev/block/by-name/cache                       flags=backup=1;wipeingui;display="Cache"
+
+# DATA PARTITION (FBE handled by vold using the clean recovery.fstab)
+/data            f2fs    /dev/block/by-name/userdata                    flags=encryptable=aes-256-xts;backup=1;wipeingui;display="Data"
+
+# Boot & Recovery
+/boot            emmc    /dev/block/by-name/boot                        flags=backup=1;display="Boot";flashimg=1
+/recovery        emmc    /dev/block/by-name/recovery                    flags=backup=1;display="Recovery";flashimg=1
+/vbmeta          emmc    /dev/block/by-name/vbmeta                      flags=backup=1;display="VBMeta";flashimg=1
+/vbmeta_system   emmc    /dev/block/by-name/vbmeta_system               flags=backup=1;display="VBMeta System";flashimg=1
+/vbmeta_vendor   emmc    /dev/block/by-name/vbmeta_vendor               flags=backup=1;display="VBMeta Vendor";flashimg=1
+/dtbo            emmc    /dev/block/by-name/dtbo                        flags=backup=1;display="DTBO";flashimg=1
+
+# Mediatek NVRAM & Security Blocks
+/persist         ext4    /dev/block/by-name/persist                     flags=backup=1;display="Persist"
+/nvdata          ext4    /dev/block/by-name/nvdata                      flags=backup=1;display="NVData"
+/nvcfg           ext4    /dev/block/by-name/nvcfg                       flags=backup=1;display="NVConfig"
+/protect_f       ext4    /dev/block/by-name/protect1                    flags=backup=1;display="Protect1"
+/protect_s       ext4    /dev/block/by-name/protect2                    flags=backup=1;display="Protect2"
+/misc            emmc    /dev/block/by-name/para                        flags=display="Misc"
+/frp             emmc    /dev/block/by-name/frp                         flags=display="FRP"
+/logo            emmc    /dev/block/by-name/logo                        flags=backup=1;display="Logo";flashimg=1
+/nvram           emmc    /dev/block/by-name/nvram                       flags=backup=1;display="NVRAM"
+/proinfo         emmc    /dev/block/by-name/proinfo                     flags=display="Proinfo"
+
+# Bootloader Blocks
+/bootloader      emmc    /dev/block/by-name/lk                          flags=backup=1;display="LK";flashimg=1
+/bootloader2     emmc    /dev/block/by-name/lk2                         flags=backup=1;display="LK2";flashimg=1
+/preloader_a     emmc    /dev/block/by-name/preloader_a                 flags=display="Preloader A"
+/preloader_b     emmc    /dev/block/by-name/preloader_b                 flags=display="Preloader B"
+
+# Hardware Daemons Sub-partitions
+/tee1            emmc    /dev/block/by-name/tee1                        flags=backup=1;display="TEE1"
+/tee2            emmc    /dev/block/by-name/tee2                        flags=backup=1;display="TEE2"
+/scp1            emmc    /dev/block/by-name/scp1                        flags=backup=1;display="SCP1"
+/scp2            emmc    /dev/block/by-name/scp2                        flags=backup=1;display="SCP2"
+/sspm_1          emmc    /dev/block/by-name/sspm_1                      flags=backup=1;display="SSPM1"
+/sspm_2          emmc    /dev/block/by-name/sspm_2                      flags=backup=1;display="SSPM2"
+/md1img          emmc    /dev/block/by-name/md1img                      flags=backup=1;display="Modem"
+/spmfw           emmc    /dev/block/by-name/spmfw                       flags=display="SPMFW";backup=0
+/gz1             emmc    /dev/block/by-name/gz1                         flags=display="GZ1";backup=0
+/gz2             emmc    /dev/block/by-name/gz2                         flags=display="GZ2";backup=0
+/sec1            emmc    /dev/block/by-name/sec1                        flags=display="Sec1";backup=0
+/boot_para       emmc    /dev/block/by-name/boot_para                   flags=display="Boot Para";backup=0
+/tkv             emmc    /dev/block/by-name/tkv                         flags=display="TKV";backup=0
+/expdb           emmc    /dev/block/by-name/expdb                       flags=display="EXPDB";backup=0
+/seccfg          emmc    /dev/block/by-name/seccfg                      flags=display="SecCfg";backup=0
+/flashinfo       emmc    /dev/block/by-name/flashinfo                   flags=display="Flash Info";backup=0
+/otp             emmc    /dev/block/by-name/otp                         flags=display="OTP";backup=0
+/tranfs          ext4    /dev/block/by-name/tranfs                      flags=backup=1;display="TranFS"
+
+# External Storages
+/external_sd     auto    /dev/block/mmcblk1p1    /dev/block/mmcblk1     flags=display="MicroSD";storage;wipeingui;removable
+/usb_otg         auto    /dev/block/sda1         /dev/block/sda         flags=display="USB-OTG";storage;wipeingui;removable
