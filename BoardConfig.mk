@@ -142,7 +142,8 @@ RECOVERY_SDCARD_ON_DATA := true
 
 # Enable native TWRP crypto and pipe decryption requests to the system vold
 TW_INCLUDE_CRYPTO := true
-TW_CRYPTO_USE_SYSTEM_VOLD := true
+TW_INCLUDE_CRYPTO_FBE := true
+
 
 # Enforce the legacy, non-metadata path that your system relies on
 TW_SKIP_METADATA_ENCRYPTION := true
