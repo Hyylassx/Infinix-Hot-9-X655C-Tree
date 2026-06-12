@@ -17,7 +17,7 @@
 /cache           ext4    /dev/block/by-name/cache                       flags=backup=1;wipeingui;display="Cache"
 
 # DATA PARTITION (FBE handled by vold using the clean recovery.fstab)
-/data            f2fs    /dev/block/by-name/userdata                    flags=encryptable=aes-256-xts;backup=1;wipeingui;display="Data"
+/data            f2fs    /dev/block/by-name/userdata                    flags=fileencryption=aes-256-xts:aes-256-cts;backup=1;wipeingui;display="Data"
 
 # Boot & Recovery
 /boot            emmc    /dev/block/by-name/boot                        flags=backup=1;display="Boot";flashimg=1
