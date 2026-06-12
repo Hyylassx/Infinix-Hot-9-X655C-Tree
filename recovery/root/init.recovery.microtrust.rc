@@ -21,7 +21,7 @@ service teei_daemon /vendor/bin/teei_daemon \
     -r 09010000000000000000000000000000
     class core
     user system
-    group system drmrpc
+    group system
     disabled
     seclabel u:r:recovery:s0
 
@@ -48,6 +48,15 @@ service vendor.gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-ser
     user system
     group system
     disabled
+    seclabel u:r:recovery:s0
+
+# EXACT MATCH FROM STOCK ROM (microtrust.bp_kmsetkey_ca.rc)
+service beanpod_check_keybox_service /vendor/bin/bp_kmsetkey_ca -c
+    class late_start
+    user system
+    group system
+    disabled
+    oneshot
     seclabel u:r:recovery:s0
 
 on fs
@@ -106,3 +115,53 @@ on post-fs-data
     mkdir /data/vendor/thh/tee_0F 0755 system system
     mkdir /data/vendor/thh/ta 0755 system system
     mkdir /data/vendor/key_provisioning 0771 system system
+
+    # EXACT chmod/chown from stock microtrust.rc
+    chmod 0755 /data/vendor/thh
+    chown system system /data/vendor/thh
+    chmod 0755 /data/vendor/thh/tee_00
+    chown system system /data/vendor/thh/tee_00
+    chmod 0755 /data/vendor/thh/tee_01
+    chown system system /data/vendor/thh/tee_01
+    chmod 0755 /data/vendor/thh/tee_02
+    chown system system /data/vendor/thh/tee_02
+    chmod 0755 /data/vendor/thh/tee_03
+    chown system system /data/vendor/thh/tee_03
+    chmod 0755 /data/vendor/thh/tee_04
+    chown system system /data/vendor/thh/tee_04
+    chmod 0755 /data/vendor/thh/tee_05
+    chown system system /data/vendor/thh/tee_05
+    chmod 0755 /data/vendor/thh/tee_06
+    chown system system /data/vendor/thh/tee_06
+    chmod 0755 /data/vendor/thh/tee_07
+    chown system system /data/vendor/thh/tee_07
+    chmod 0755 /data/vendor/thh/tee
+    chown system system /data/vendor/thh/tee
+    chmod 0755 /data/vendor/thh/tee/tas
+    chown system system /data/vendor/thh/tee/tas
+    chmod 0755 /data/vendor/thh/tee_08
+    chown system system /data/vendor/thh/tee_08
+    chmod 0755 /data/vendor/thh/tee_09
+    chown system system /data/vendor/thh/tee_09
+    chmod 0755 /data/vendor/thh/tee_0A
+    chown system system /data/vendor/thh/tee_0A
+    chmod 0755 /data/vendor/thh/tee_0B
+    chown system system /data/vendor/thh/tee_0B
+    chmod 0755 /data/vendor/thh/tee_0C
+    chown system system /data/vendor/thh/tee_0C
+    chmod 0755 /data/vendor/thh/tee_0D
+    chown system system /data/vendor/thh/tee_0D
+    chmod 0755 /data/vendor/thh/tee_0E
+    chown system system /data/vendor/thh/tee_0E
+    chmod 0755 /data/vendor/thh/tee_0F
+    chown system system /data/vendor/thh/tee_0F
+    chmod 0755 /data/vendor/thh/ta
+    chown system system /data/vendor/thh/ta
+    chmod 0755 /data/vendor/thh/system
+    chown system system /data/vendor/thh/system
+    chmod 0771 /data/vendor/key_provisioning
+    chown system system /data/vendor/key_provisioning
+
+# STOCK TRIGGER FOR FBE FAKE STATE
+on property:vendor.crypto.fake_encrypt=1 && property:vold.post_fs_data_done=1
+    setprop vendor.soter.teei.crypto.state unencrypted
