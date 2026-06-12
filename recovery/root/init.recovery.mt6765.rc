@@ -1,11 +1,9 @@
 import /init.recovery.microtrust.rc
 
 on init
-    # Core & Temp Directory Creation
     mkdir /tmp 0777 root root
     restorecon /tmp
 
-    # CRITICAL FIX UNIFIED: Pure Cgroups & Cpuset structure
     mkdir /dev/cpuset 0750 root system
     mount cgroup none /dev/cpuset cpuset
     mkdir /dev/cpuset/foreground 0750 root system
@@ -19,24 +17,22 @@ on init
     mkdir /dev/cg2_bpf 0750 root system
     mount cgroup2 none /dev/cg2_bpf nodev noexec nosuid
 
-    # USB Configurationfs
     setprop sys.usb.configfs 1
     setprop sys.usb.ffs.aio_compat 1
     setprop sys.usb.controller musb-hdrc
     setprop ro.boot.usbcontroller musb-hdrc
     
-    # Export Dynamic Library Path (Must Include /sbin)
+    # PREVENT FASTBOOT REBOOT: If vold crashes, stay in TWRP!
+    setprop sys.init_fatal_vold.reboot 0
+    
     export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/system/lib:/vendor/lib:/sbin
 
 on fs
     write /sys/class/udc/musb-hdrc/device/cmode 1
-
-    # Jalankan binder dasar serentak
     start servicemanager
     start hwservicemanager
 
 on post-fs
-    # Preloader Symbolic Link (Typical MediaTek MT6765 Chipset)
     symlink /dev/block/sda /dev/block/mmcblk0boot0
     symlink /dev/block/sdb /dev/block/mmcblk0boot1
     symlink /dev/block/mmcblk0boot0 /dev/block/platform/bootdevice/by-name/preloader_a
@@ -44,7 +40,6 @@ on post-fs
     chmod 0755 /sbin/foxstart.sh
 
 on boot
-    # Touch Input Permissions (Touchscreen Driver)
     chmod 0666 /dev/input/event0
     chmod 0666 /dev/input/event1
     chmod 0666 /dev/input/event2
@@ -55,60 +50,70 @@ on boot
 on post-fs-data
     start logd
 
-# DYNAMIC TRIGGER CHAIN #
+# DYNAMIC TRIGGER CHAIN - FIXED ORDER #
 
-# Run the vold once TEE Microtrust is active
+# Start Keymaster HALs once TEE Daemon is running
 on property:init.svc.teei_daemon=running
-    start vold
+    start keymaster-4-0-beanpod
+    start capi-2-0
+    start gatekeeper-1-0
 
 # SCENARIO A: ANDROID 10 Path (XOS Stock ROM - SDK 29)
-on property:init.svc.vendor.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=29
+on property:init.svc.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=29
     start keystore
     start gatekeeperd
 
+# Start vold ONLY after keystore is running for SDK 29
+on property:init.svc.keystore=running && property:ro.build.version.sdk=29
+    start vold
+
 # SCENARIO B: ANDROID 11 Path (SDK 30)
-on property:init.svc.vendor.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=30
+on property:init.svc.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=30
     start wait_for_keymaster
 
 on property:init.svc.wait_for_keymaster=stopped && property:ro.build.version.sdk=30
     start keystore
     start gatekeeperd
+    start vold
 
-# SCENARIO C: ANDROID 12 To 14 Path (Custom ROM - SDK 31 And Above)
-on property:init.svc.vendor.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=31
+# SCENARIO C: ANDROID 12+ Path (SDK 31+)
+on property:init.svc.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=31
     start vndservicemanager
     start wait_for_keymaster
 
-on property:init.svc.vendor.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=32
+on property:init.svc.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=32
     start vndservicemanager
     start wait_for_keymaster
 
-on property:init.svc.vendor.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=33
+on property:init.svc.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=33
     start vndservicemanager
     start wait_for_keymaster
 
-on property:init.svc.vendor.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=34
+on property:init.svc.keymaster-4-0-beanpod=running && property:ro.build.version.sdk=34
     start vndservicemanager
     start wait_for_keymaster
 
-# Execute Keystore2 after the keymaster security guard is finished (Only A12 and above)
 on property:init.svc.wait_for_keymaster=stopped && property:ro.build.version.sdk=31
     start keystore2
     start gatekeeperd
+    start vold
 
 on property:init.svc.wait_for_keymaster=stopped && property:ro.build.version.sdk=32
     start keystore2
     start gatekeeperd
+    start vold
 
 on property:init.svc.wait_for_keymaster=stopped && property:ro.build.version.sdk=33
     start keystore2
     start gatekeeperd
+    start vold
 
 on property:init.svc.wait_for_keymaster=stopped && property:ro.build.version.sdk=34
     start keystore2
     start gatekeeperd
+    start vold
 
-# RECOVERY OPTIMIZED CORE SERVICES DEFINITION #
+# CORE SERVICES #
 
 service servicemanager /system/bin/servicemanager
     class core
@@ -165,7 +170,6 @@ service gatekeeperd /system/bin/gatekeeperd /data/misc/gatekeeper
     disabled
     seclabel u:r:recovery:s0
 
-# 🔑 SERVICES: Android 10 & 11 Traditional Keystore (FIXED GROUP GID)
 service keystore /system/bin/keystore /data/misc/keystore
     class main
     user keystore
@@ -174,7 +178,6 @@ service keystore /system/bin/keystore /data/misc/keystore
     disabled
     seclabel u:r:recovery:s0
 
-# 🔑 MODEREN SERVICE: Keystore2 Rust Android 12 and above
 service keystore2 /system/bin/keystore2 /data/misc/keystore
     class main
     user 1000
