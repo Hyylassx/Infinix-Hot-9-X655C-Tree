@@ -142,11 +142,11 @@ TWRP_EVENT_LOGGING := true
 RECOVERY_SDCARD_ON_DATA := true
 
 # Enable native TWRP crypto and pipe decryption requests to the system vold
-#TW_INCLUDE_CRYPTO := true
-#TW_INCLUDE_CRYPTO_FBE := true
+TW_INCLUDE_CRYPTO := true
+TW_INCLUDE_CRYPTO_FBE := true
 
 # Enforce the legacy, non-metadata path that your system relies on
-#TW_SKIP_METADATA_ENCRYPTION := true
+TW_SKIP_METADATA_ENCRYPTION := true
 TW_FORCE_KEY_DIRECTORY := "/data/unencrypted/key"
 
 # Security Patches & Version Override (Aligned for Android 10 Property Space)
