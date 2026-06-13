@@ -163,5 +163,5 @@ on post-fs-data
     chown system system /data/vendor/key_provisioning
 
 # STOCK TRIGGER FOR FBE FAKE STATE
-#on property:vendor.crypto.fake_encrypt=1 && property:vold.post_fs_data_done=1
-#    setprop vendor.soter.teei.crypto.state unencrypted
+on property:vendor.crypto.fake_encrypt=1 && property:vold.post_fs_data_done=1
+    setprop vendor.soter.teei.crypto.state unencrypted
