@@ -147,7 +147,7 @@ RECOVERY_SDCARD_ON_DATA := true
 
 # Enforce the legacy, non-metadata path that your system relies on
 #TW_SKIP_METADATA_ENCRYPTION := true
-#TW_FORCE_KEY_DIRECTORY := "/data/unencrypted/key"
+TW_FORCE_KEY_DIRECTORY := "/data/unencrypted/key"
 
 # Security Patches & Version Override (Aligned for Android 10 Property Space)
 PLATFORM_SECURITY_PATCH := 2020-03-05
