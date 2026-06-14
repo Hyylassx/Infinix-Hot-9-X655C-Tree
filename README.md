@@ -21,4 +21,4 @@ Board: Infinix-X655C
 Base On: X655C-H6211ABKG-Q-OP-220314V315 
 # Currently Fixing Decryption, The ADB is Working, The Problem Is Freaking Decryption
 # My Github Action Workflow is below (⚠️AGAIN BE CAREFULL⚠️)
-# https://github.com/Hyylassx/x655c-recovery-build/releases
+# https://github.com/Hyylassx/Recovery-Compiler/releases
